@@ -1,11 +1,27 @@
 class MockLLM:
 
+    def __init__(self):
+        
+        self.templates = {
+            "login": self.login_case,
+            "password": self.password_case,
+            "register": self.register_case,
+            "profile": self.profile_case
+
+        }
+
     def generate(self, prompt: str):
 
         prompt = prompt.lower()
 
+        for key, handler in self.templates.items():
+            if key in prompt:
+                return handler()
+
+        return self.generic_case()
+
     # User can login
-        if "login" in prompt:
+    def login_case(self):
             return {
                 "test_cases": [
                     "User can login with valid credentials",
@@ -22,7 +38,7 @@ class MockLLM:
                 ]
             }
     # User can reset password
-        if "password" in prompt: 
+    def password_case(self): 
             return {
                 "test_cases": [
                     "User can request password reset",
@@ -37,7 +53,7 @@ class MockLLM:
                 ]
             }
     # User can register account
-        if "register" in prompt: 
+    def register_case(self):
             return {
                 "test_cases": [
                     "User can register with valid information",
@@ -63,7 +79,7 @@ class MockLLM:
                 ]
             }
     # User can edit profile
-        if "profile" in prompt: 
+    def profile_case(self):
             return {
                 "test_cases": [
                     "User can update profile information successfully",
@@ -92,15 +108,16 @@ class MockLLM:
                 ]
             }
 
-        return {
-            "test_cases": [
-                "Generic happy path"
-            ],
-            "robot_framework": """
-                *** Test Cases ***
-                Generic Test
-            """,
-            "usability_tests": [
-                "Can user complete task?"
-            ]
-        }
+    def generic_case(self):
+            return {
+                "test_cases": [
+                    "Generic happy path"
+                ],
+                "robot_framework": """
+                    *** Test Cases ***
+                    Generic Test
+                """,
+                "usability_tests": [
+                    "Can user complete task?"
+                ]
+            }
