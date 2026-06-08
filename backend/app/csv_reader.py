@@ -1,4 +1,6 @@
 import csv
+from app.domain.story import Story
+
 
 def read_stories(filepath: str):
 
@@ -8,12 +10,14 @@ def read_stories(filepath: str):
         reader = csv.DictReader(file)
 
         for row in reader:
-            stories.append({
-                "issue_key": row.get("Issue key"),
-                "summary": row.get("Summary"),
-                "description": row.get("Description"),
-                "priority": row.get("Priority"),
-                "status": row.get("Status")
-            })
+            stories.append(
+                Story(
+                issue_key=row.get("Issue key"),
+                summary=row.get("Summary"),
+                description=row.get("Description"),
+                priority=row.get("Priority"),
+                status=row.get("Status")
+                )
+            )
 
     return stories

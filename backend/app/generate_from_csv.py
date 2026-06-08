@@ -24,10 +24,10 @@ def generate_test_cases(llm, story):
 
     return [
         {
-            "story_key": story["issue_key"],
-            "story_title": story["summary"],
+            "story_key": story.issue_key,
+            "story_title": story.summary,
             "test_case": test_case,
-            "priority": story["priority"]
+            "priority": story.priority
         }
         for test_case in result["test_cases"]
     ]
@@ -40,10 +40,10 @@ def generate_usability_tests(llm, story):
 
     return [
         {
-            "story_key": story["issue_key"],
-            "story_title": story["summary"],
+            "story_key": story.issue_key,
+            "story_title": story.summary,
             "usability_test": usability_test,
-            "priority": story["priority"]
+            "priority": story.priority
         }
         for usability_test in result["usability_tests"]
     ]
