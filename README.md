@@ -46,7 +46,7 @@ backend/
 ## Käyttäjätarinan formaatti
 
 ```csv
-key,summary,description,priority,status,story_points
+Issue key,summary,description,priority,status
 AUTH-1,User can login,"As a user, I want to login so that I can access my account",High,To Do,3
 ```
 
