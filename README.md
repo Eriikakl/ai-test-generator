@@ -149,7 +149,7 @@ Aktivointi:
 
 **Windows:**
 ```bash
-.venv\Scripts\activate
+. .venv/scripts/activate
 ```
 
 
