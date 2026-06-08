@@ -23,7 +23,7 @@ def run():
     for story in stories:
 
         prompt = f"""
-        Key: {story['key']}
+        Key: {story['Issue key']}
         Summary: {story['summary']}
         Description: {story['description']}
         Priority: {story['priority']}
@@ -34,7 +34,7 @@ def run():
         for test_case in result["test_cases"]:
 
             test_case_rows.append({
-                "story_key": story["key"],
+                "story_key": story["Issue key"],
                 "story_title": story["summary"],
                 "test_case": test_case,
                 "priority": story["priority"]
@@ -43,7 +43,7 @@ def run():
         for usability_test in result["usability_tests"]:
 
             usability_rows.append({
-                "story_key": story["key"],
+                "story_key": story["Issue key"],
                 "story_title": story["summary"],
                 "usability_test": usability_test,
                 "priority": story["priority"]
