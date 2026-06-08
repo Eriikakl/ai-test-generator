@@ -8,8 +8,53 @@ from app.csv_writer import (
 
 from app.llm import LLMService
 
+from app.prompt_builder import (
+    build_test_case_prompt,
+    build_usability_prompt,
+    build_robot_prompt
+)
+
 
 llm = LLMService()
+
+def generate_test_cases(llm, story):
+
+    prompt = build_test_case_prompt(story)
+    result = llm.generate(prompt)
+
+    return [
+        {
+            "story_key": story["issue_key"],
+            "story_title": story["summary"],
+            "test_case": test_case,
+            "priority": story["priority"]
+        }
+        for test_case in result["test_cases"]
+    ]
+
+
+def generate_usability_tests(llm, story):
+
+    prompt = build_usability_prompt(story)
+    result = llm.generate(prompt)
+
+    return [
+        {
+            "story_key": story["issue_key"],
+            "story_title": story["summary"],
+            "usability_test": usability_test,
+            "priority": story["priority"]
+        }
+        for usability_test in result["usability_tests"]
+    ]
+
+
+def generate_robot_test(llm, story):
+
+    prompt = build_robot_prompt(story)
+    result = llm.generate(prompt)
+
+    return result["robot_framework"]
 
 
 def run():
@@ -22,34 +67,21 @@ def run():
 
     for story in stories:
 
-        prompt = f"""
-        Key: {story['Issue key']}
-        Summary: {story['summary']}
-        Description: {story['description']}
-        Priority: {story['priority']}
-        """
+        # Test cases
+        test_case_rows.extend(
+            generate_test_cases(llm, story)
+        )
 
-        result = llm.generate(prompt)
+        # Usability tests
+        usability_rows.extend(
+            generate_usability_tests(llm, story)
+        )
 
-        for test_case in result["test_cases"]:
+        # Robot Framework
+        robot_tests.append(
+            generate_robot_test(llm, story)
+        )
 
-            test_case_rows.append({
-                "story_key": story["Issue key"],
-                "story_title": story["summary"],
-                "test_case": test_case,
-                "priority": story["priority"]
-            })
-
-        for usability_test in result["usability_tests"]:
-
-            usability_rows.append({
-                "story_key": story["Issue key"],
-                "story_title": story["summary"],
-                "usability_test": usability_test,
-                "priority": story["priority"]
-            })
-
-        robot_tests.append(result["robot_framework"])
 
     write_test_cases(
         "output/test_cases.csv",

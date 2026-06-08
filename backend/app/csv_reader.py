@@ -8,6 +8,12 @@ def read_stories(filepath: str):
         reader = csv.DictReader(file)
 
         for row in reader:
-            stories.append(row)
+            stories.append({
+                "issue_key": row.get("Issue key"),
+                "summary": row.get("Summary"),
+                "description": row.get("Description"),
+                "priority": row.get("Priority"),
+                "status": row.get("Status")
+            })
 
     return stories
