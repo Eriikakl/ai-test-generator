@@ -1,4 +1,4 @@
-Issue key,summary,description,priority,status
+Issue key,Summary,Description,Priority,Status
 AUTH-1,User can login,"As a user, I want to login so that I can access my account",High,To Do
 AUTH-2,User can register account,"As a visitor, I want to create an account so that I can use the service",High,To Do
 AUTH-3,User can edit profile,"As a user, I want to update my profile information",Medium,To Do
