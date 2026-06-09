@@ -14,14 +14,22 @@ def build_test_case_prompt(story: Story) -> str:
             """
 
 ## Usability test generation prompt
-def build_usability_prompt(story: Story) -> str:
+def build_usability_prompt(story: Story, test_cases: list) -> str:
+
+    test_cases_text = "\n".join(test_cases)
+
     return f"""
             Issue Key: {story.issue_key}
             Summary: {story.summary}
             Description: {story.description}
             Priority: {story.priority}
 
-            Generate USABILITY TESTS focusing on:
+            TEST CASES:
+            {test_cases_text}
+
+            Generate USABILITY TESTS based on the above test cases.
+
+            Focus on:
             - user experience
             - clarity
             - discoverability

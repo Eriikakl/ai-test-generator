@@ -33,9 +33,10 @@ def generate_test_cases(llm, story):
     ]
 
 
-def generate_usability_tests(llm, story):
+def generate_usability_tests(llm, story, test_cases):
 
-    prompt = build_usability_prompt(story)
+    test_cases_text = "\n".join(test_cases)
+    prompt = build_usability_prompt(story, test_cases_text)
     result = llm.generate(prompt)
 
     return [
@@ -68,13 +69,16 @@ def run():
     for story in stories:
 
         # Test cases
-        test_case_rows.extend(
-            generate_test_cases(llm, story)
-        )
+
+        test_case_rows_result = generate_test_cases(llm, story)
+
+        test_case_rows.extend(test_case_rows_result)
 
         # Usability tests
+
+        test_case_texts = [t["test_case"] for t in test_case_rows_result]
         usability_rows.extend(
-            generate_usability_tests(llm, story)
+            generate_usability_tests(llm, story, test_case_texts)
         )
 
         # Robot Framework
