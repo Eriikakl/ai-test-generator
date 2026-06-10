@@ -32,8 +32,7 @@ backend/
 │   ├── domain/
 │       └── story.py
 │   ├── service/
-│       ├── jira_service.py
-│       ├── qa_engine.py
+│       └── jira_service.py
 │   ├── csv_reader.py
 │   ├── csv_writer.py
 │   ├── generate_from_csv.py
