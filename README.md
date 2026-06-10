@@ -40,6 +40,7 @@ backend/
 │   ├── main.py
 │   ├── mock_llm.py
 │   ├── prompt_builder.py
+│   ├── run_from_jira.py
 │
 ├── stories/
 │   └── user_stories.csv
