@@ -15,8 +15,6 @@ from app.prompt_builder import (
 )
 
 
-llm = LLMService()
-
 def generate_test_cases(llm, story):
 
     prompt = build_test_case_prompt(story)
@@ -29,7 +27,7 @@ def generate_test_cases(llm, story):
             "test_case": test_case,
             "priority": story.priority
         }
-        for test_case in result["test_cases"]
+        for test_case in result.get("test_cases", [])
     ]
 
 
@@ -46,7 +44,7 @@ def generate_usability_tests(llm, story, test_cases):
             "usability_test": usability_test,
             "priority": story.priority
         }
-        for usability_test in result["usability_tests"]
+        for usability_test in result.get("usability_tests", [])
     ]
 
 
@@ -55,11 +53,12 @@ def generate_robot_test(llm, story):
     prompt = build_robot_prompt(story)
     result = llm.generate(prompt)
 
-    return result["robot_framework"]
+    return result.get("robot_framework", "")
 
 
 def run():
-
+    
+    llm = LLMService()
     stories = read_stories("stories/user_stories.csv")
 
     test_case_rows = []
