@@ -29,13 +29,19 @@ Tällä hetkellä agentti:
 ```text
 backend/
 ├── app/
+│   ├── domain/
+│       └── story.py
+│   ├── service/
+│       ├── jira_service.py
+│       ├── qa_engine.py
 │   ├── csv_reader.py
 │   ├── csv_writer.py
 │   ├── generate_from_csv.py
 │   ├── llm.py
 │   ├── main.py
-│   └── mock_llm.py
-│   └── prompt_builder.py
+│   ├── mock_llm.py
+│   ├── prompt_builder.py
+│
 ├── stories/
 │   └── user_stories.csv
 ├── output/
