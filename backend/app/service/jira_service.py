@@ -50,7 +50,7 @@ class JiraService:
         )
 
     ## create test case
-    def create_test_case(self, summary: str):
+    def create_test_case(self, summary: str, description: str):
         url = f"{self.base_url}/rest/api/3/issue"
 
         payload = {
