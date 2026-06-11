@@ -1,7 +1,7 @@
 # AI Test Generator
 
 Tavoitteena on automatisoida käyttäjätarinoiden muuttaminen testitapauksiksi sekä mahdollistaa myöhemmin integraatiot Jiraan. 
-Tarkoituksena luoda AI-pohjainen testausagentti, joka lukee käyttäjätarinoita CSV-tiedostosta ja generoi:
+Tarkoituksena luoda AI-pohjainen testausagentti/testiautomaatioputki, joka lukee käyttäjätarinoita CSV-tiedostosta ja generoi:
 
 - Testitapaukset
 - Robot Framework -testiskriptit
@@ -13,14 +13,21 @@ Tarkoituksena luoda AI-pohjainen testausagentti, joka lukee käyttäjätarinoita
 
 - Kehityksessä
 
-Tällä hetkellä agentti:
+Tällä hetkellä projekti koostuu kahdesta eri workflow:sta.
 
+Jira-pohjainen test case -generointi:
+- Hakee Jira API:sta käyttäjätarinan
+- Generoi testitapaukset MockLLM:n avulla
+- Luo käyttäjätarinan pohjalta test case-issuen
+- Postaa luodut testitapaukset Jiraan
+
+CSV-pohjainen testidatan generointi:
 - Lukee käyttäjätarinat CSV-tiedostosta
 - Käyttää MockLLM-komponenttia testidatan generointiin
 - Tuottaa:
-  - `test_cases.csv`
-  - `usability_tests.csv`
-  - `generated_tests.robot`
+      - `test_cases.csv`
+      - `usability_tests.csv`
+      - `generated_tests.robot`
 
  FastAPI on valmisteltu tulevaa API-rajapintaa ja integraatioita varten.
 
@@ -33,6 +40,7 @@ backend/
 │       └── story.py
 │   ├── service/
 │       └── jira_service.py
+│   ├── config.py
 │   ├── csv_reader.py
 │   ├── csv_writer.py
 │   ├── generate_from_csv.py
@@ -51,6 +59,16 @@ backend/
 ```
 
 ## Käyttäjätarinan formaatti
+
+```JSON
+{
+  "issue_key": "ABC-1",
+  "summary": "User can login",
+  "description": "As a user I want to login...",
+  "priority": "High",
+  "status": "To Do"
+}
+```
 
 ```csv
 Issue key,Summary,Description,Priority,Status
@@ -100,7 +118,9 @@ AUTH-3,User can edit profile,Can users confirm that changes were saved?,Medium
 ### Backend
 
 - Python
+- Requests
 - FastAPI
+
 
 ### AI
 
@@ -116,11 +136,14 @@ Suunnitteilla:
 
 Nykyinen:
 - CSV
+- JSON
 
 Suunnitteilla:
 - PostgreSQL
 
 ## Arkkitehtuuri
+
+### CSV
 
 ```text
 User Stories - Syöte
@@ -139,6 +162,24 @@ CSV ja Robot Framework File - Tuotokset
 ```
 
 -  *LLM Service: MockLLM (simuloitu AI)
+
+### Jira
+
+```text
+Jira User Story (ABC-1)
+      ↓
+JiraService (GET /issue)
+      ↓
+Story (domain model)
+      ↓
+Prompt Builder
+      ↓
+LLM Service (MockLLM)
+      ↓
+Test Case Generation
+      ↓
+JiraService (POST /issue)
+```
 
 
 ## Setup
@@ -161,14 +202,33 @@ Aktivointi:
 
 ### 3. Asennetaan riippuvuudet
 
-- Ei vielä tarvitse
+#### Vain Jira-workflow:
+```bash
+pip install requests
+```
+
+---
+```bash
+pip install python-dotenv
+```
+
+---
 
 ## Suoritus
 
-### Ajetaan agentti batch-ajona
+### Ajetaan batch-ajona
+
+#### CSV
 
 ```bash
 python -m app.generate_from_csv
+```
+
+---
+
+#### Jira 
+```bash
+python -m app.run_from_jira
 ```
 
 ---
