@@ -214,6 +214,17 @@ pip install python-dotenv
 
 ---
 
+### 4. Ympäristömuuttujat
+Projektiin on luotu `.env` tiedosto Jira-asetusten turvalliseen käyttöön: 
+
+```env
+JIRA_BASE_URL=https://your-domain.atlassian.net
+JIRA_EMAIL=your.email@example.com
+JIRA_API_TOKEN=your_api_token_here
+JIRA_PROJECT_KEY=ABC
+```
+
+
 ## Suoritus
 
 ### Ajetaan batch-ajona
