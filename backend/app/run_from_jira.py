@@ -5,14 +5,15 @@ from app.config import (
     JIRA_BASE_URL,
     JIRA_EMAIL,
     JIRA_API_TOKEN,
-    JIRA_PROJECT_KEY
+    JIRA_PROJECT_KEY,
+    GEMINI_API_KEY
 )
 
 from app.generate_from_csv import (
     generate_test_cases
 )
 
-llm = LLMService()
+llm = LLMService(GEMINI_API_KEY)
 
 jira = JiraService(
     base_url=JIRA_BASE_URL,
