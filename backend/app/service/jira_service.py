@@ -1,6 +1,7 @@
 import requests
 from app.domain.story import Story
 
+## extracted text from Jira ADF description.
 def extract_text(adf):
     if not adf:
         return ""
@@ -18,6 +19,27 @@ def extract_text(adf):
 
     except Exception:
         return ""
+
+## built Jira compatible description
+def build_description(issue_key: str, story: Story):
+
+    text = f"""Generated from story: {issue_key} {story.summary}"""
+
+    return {
+        "type": "doc",
+        "version": 1,
+        "content": [
+            {
+                "type": "paragraph",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": text
+                    }
+                ]
+            }
+        ]
+    }
 
 class JiraService:
 
@@ -50,7 +72,7 @@ class JiraService:
         )
 
     ## create test case
-    def create_test_case(self, summary: str, description: str):
+    def create_test_case(self, summary: str, description: dict):
         url = f"{self.base_url}/rest/api/3/issue"
 
         payload = {
@@ -59,6 +81,7 @@ class JiraService:
                     "key": self.project_key
                 },
                 "summary": summary,
+                "description": description,
                 "issuetype": {
                     "name": "Task"
                 }
@@ -76,26 +99,50 @@ class JiraService:
         return response.json()
 
     ## push results to jira
-    def push_test_cases(self, issue_key: str, test_cases):
+    def push_test_cases(self, story: Story, test_cases):
 
-        print(f"\n Pushing test cases for {issue_key}")
+        print(f"\n Pushing test cases for {story.issue_key}")
 
         created = []
 
         for tc in test_cases:
             issue = self.create_test_case(
                 summary=f"[TEST] {tc['test_case']}",
-                description=f"""
-                Generated from story: {issue_key}
-
-                Test case:
-                {tc['test_case']}
-
-                Priority: {tc['priority']}
-                """
+                description=build_description(story.issue_key, story)
             )
-            created.append(issue["key"])
-            print("Created:", issue["key"])
 
+            test_key = issue["key"]
+            created.append(test_key)
+
+            print("Created:", test_key)
+            self.link_issues(story.issue_key, test_key)
+
+            print(f"Linked {story.issue_key} -> {test_key}")
         print("\nDONE")
         return created
+    
+    ## created Jira issue link between user story and test case
+    def link_issues(self, story_key: str, test_key: str):
+
+            url = f"{self.base_url}/rest/api/3/issueLink"
+
+            payload = {
+                "type": {
+                    "name": "Relates"
+                },
+                "inwardIssue": {
+                    "key": test_key
+                },
+                "outwardIssue": {
+                    "key": story_key
+                }
+            }
+
+            response = requests.post(
+                url,
+                json=payload,
+                auth=self.auth,
+                headers=self.headers
+            )
+
+            response.raise_for_status()

@@ -28,7 +28,7 @@ def run(issue_key: str):
 
     test_cases = generate_test_cases(llm, story)
 
-    jira.push_test_cases(issue_key, test_cases)
+    jira.push_test_cases(story, test_cases)
 
 
 if __name__ == "__main__":
