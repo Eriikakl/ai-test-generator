@@ -4,13 +4,31 @@ from app.domain.story import Story
 ## Test case generation prompt
 def build_test_case_prompt(story: Story) -> str:
     return f"""
+
+            Generate test cases strictly based on the provided user story details.
+            
             Issue Key: {story.issue_key}
             Summary: {story.summary}
             Description: {story.description}
             Priority: {story.priority}
 
-            Generate detailed TEST CASES including positive and negative scenarios.
-            Return as bullet list.
+            Generate detailed software TEST CASES including positive and negative scenarios.
+            Each test case must be a clear and testable sentence.
+            Return ONLY valid JSON in the following format:
+
+            {{
+            "test_cases": [
+                "test case 1",
+                "test case 2",
+                "test case 3"
+            ]
+            }}
+            IMPORTANT:
+            Return ONLY raw JSON.
+            Do not use markdown.
+            Do not wrap in ``` or ```json.
+            Do not add explanations.
+            Do not wrap the response in code blocks.
             """
 
 ## Usability test generation prompt
