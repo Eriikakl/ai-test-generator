@@ -17,7 +17,7 @@ Tällä hetkellä projekti koostuu kahdesta eri workflow:sta.
 
 Jira-pohjainen test case -generointi:
 - Hakee Jira API:sta käyttäjätarinan
-- Generoi testitapaukset MockLLM:n avulla
+- Generoi testitapaukset LLM:n (Gemini) avulla
 - Luo käyttäjätarinan pohjalta test case-issuen
 - Postaa luodut testitapaukset Jiraan
 
@@ -125,12 +125,8 @@ AUTH-3,User can edit profile,Can users confirm that changes were saved?,Medium
 ### AI
 
 Nykyinen:
+- Google Gemini API
 - MockLLM
-
-Suunnitteilla:
-- OpenAI
-- Ollama
-- Llama
 
 ### Data
 
@@ -174,7 +170,7 @@ Story (domain model)
       ↓
 Prompt Builder
       ↓
-LLM Service (MockLLM)
+LLM Service (Gemini)
       ↓
 Test Case Generation
       ↓
@@ -205,11 +201,13 @@ Aktivointi:
 #### Vain Jira-workflow:
 ```bash
 pip install requests
+
+pip install python-dotenv
 ```
 
 ---
 ```bash
-pip install python-dotenv
+pip install google-genai
 ```
 
 ---
@@ -222,6 +220,8 @@ JIRA_BASE_URL=https://your-domain.atlassian.net
 JIRA_EMAIL=your.email@example.com
 JIRA_API_TOKEN=your_api_token_here
 JIRA_PROJECT_KEY=ABC
+
+GEMINI_API_KEY=your_api_token_here
 ```
 
 
