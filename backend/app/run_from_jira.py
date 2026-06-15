@@ -9,11 +9,11 @@ from app.config import (
     GEMINI_API_KEY
 )
 
-from app.generate_from_csv import (
+from app.service.test_generation_service import (
     generate_test_cases
 )
 
-llm = LLMService(GEMINI_API_KEY)
+llm = LLMService(GEMINI_API_KEY) ## use_mock=True (MockLLM mode)
 
 jira = JiraService(
     base_url=JIRA_BASE_URL,

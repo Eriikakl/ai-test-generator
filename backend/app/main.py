@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from app.llm import LLMService
 from app.domain.story import Story
+## from app.config import GEMINI_API_KEY
 
-from app.generate_from_csv import (
+from app.service.test_generation_service import (
     generate_test_cases,
     generate_usability_tests
 )
 
 app = FastAPI()
-llm = LLMService()
+llm = LLMService(use_mock=True) ## GEMINI_API_KEY (Gemini mode)
 
 @app.post("/generate")
 def generate(story: Story):
