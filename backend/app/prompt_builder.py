@@ -23,12 +23,10 @@ def build_test_case_prompt(story: Story) -> str:
                 "test case 3"
             ]
             }}
+
             IMPORTANT:
-            Return ONLY raw JSON.
             Do not use markdown.
-            Do not wrap in ``` or ```json.
             Do not add explanations.
-            Do not wrap the response in code blocks.
             """
 
 ## Usability test generation prompt
@@ -53,7 +51,19 @@ def build_usability_prompt(story: Story, test_cases: list) -> str:
             - discoverability
             - error understanding
 
-            Return as bullet list.
+             Return ONLY valid JSON in the following format:
+
+            {{
+           "usability_tests": [
+            "test 1",
+            "test 2",
+            "test 3"
+            ]
+            }}
+
+            IMPORTANT:
+            Do not use markdown.
+            Do not add explanations.
             """
 
 ## Robot Framework generation prompt
