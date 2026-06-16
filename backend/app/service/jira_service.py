@@ -146,3 +146,36 @@ class JiraService:
             )
 
             response.raise_for_status()
+
+    ## get test cases from Jira
+    def get_test_cases(self, issue_key: str):
+        url = f"{self.base_url}/rest/api/3/issue/{issue_key}"
+
+        params = {
+            "fields": "issuelinks"
+        }
+
+        response = requests.get(url, auth=self.auth, params=params)
+        response.raise_for_status()
+
+        data = response.json()
+
+        links = data["fields"].get("issuelinks", [])
+
+        test_case_keys = []
+
+        for link in links:
+            if "outwardIssue" in link:
+                test_case_keys.append(link["outwardIssue"]["key"])
+            if "inwardIssue" in link:
+                test_case_keys.append(link["inwardIssue"]["key"])
+
+        issues = []
+
+        for key in test_case_keys:
+            url = f"{self.base_url}/rest/api/3/issue/{key}"
+            response = requests.get(url, auth=self.auth)
+            response.raise_for_status()
+            issues.append(response.json())
+
+        return issues

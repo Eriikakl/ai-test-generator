@@ -13,7 +13,7 @@ from app.service.test_generation_service import (
     generate_test_cases
 )
 
-llm = LLMService(GEMINI_API_KEY) ## use_mock=True (MockLLM mode)
+llm = LLMService(use_mock=True) ## use_mock=True (MockLLM mode), GEMINI_API_KEY (Gemini mode)
 
 jira = JiraService(
     base_url=JIRA_BASE_URL,
@@ -30,6 +30,13 @@ def run(issue_key: str):
     test_cases = generate_test_cases(llm, story)
 
     jira.push_test_cases(story, test_cases)
+
+    test_cases = jira.get_test_cases(issue_key)
+
+    print("\n=== TEST CASES ===\n")
+
+    for tc in test_cases:
+        print("-", tc["fields"]["summary"])
 
 
 if __name__ == "__main__":
