@@ -33,6 +33,10 @@ CSV-pohjainen testidatan generointi:
 ```text
 backend/
 ├── app/
+│   ├── csv_pipeline/
+│       ├── csv_reader.py
+│       ├── csv_writer.py
+│       ├── generate_from_csv.py
 │   ├── domain/
 │       └── story.py
 │   ├── service/
@@ -240,7 +244,7 @@ GEMINI_API_KEY=your_api_token_here
 #### CSV
 
 ```bash
-python -m app.generate_from_csv
+python -m app.csv_pipeline.generate_from_csv
 ```
 
 ---
