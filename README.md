@@ -1,10 +1,6 @@
 # AI Test Generator
 
-Tavoitteena on automatisoida käyttäjätarinoiden muuttaminen testitapauksiksi sekä mahdollistaa integraatio Jiraan. 
-
-Tarkoituksena luoda AI-pohjainen testausagentti/testiautomaatioputki, joka käsittelee käyttäjätarinoita kahdessa eri workflow:ssa.
-
-
+Tavoitteena on rakentaa AI-pohjainen automaatioputki käyttäjätarinoiden muuttamiseksi testitapauksiksi sekä mahdollistaa integraatio Jiraan. Tarkoituksena on lisäksi, että testitapauksista voidaan luoda pyynnöstä käyttöliittymän kautta käytettävyystestit sekä testiscriptit.
 
 ## Nykyinen tilanne
 
@@ -239,7 +235,7 @@ GEMINI_API_KEY=your_api_token_here
 
 ## Suoritus
 
-### Ajetaan batch-ajona
+### Ajetaan batch-ajona / Backend
 
 #### CSV
 
