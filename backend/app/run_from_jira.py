@@ -1,13 +1,5 @@
 from app.llm import LLMService
-from app.service.jira_service import JiraService
-
-from app.config import (
-    JIRA_BASE_URL,
-    JIRA_EMAIL,
-    JIRA_API_TOKEN,
-    JIRA_PROJECT_KEY,
-    GEMINI_API_KEY
-)
+from app.services import get_jira_service
 
 from app.service.test_generation_service import (
     generate_test_cases
@@ -15,12 +7,7 @@ from app.service.test_generation_service import (
 
 llm = LLMService(use_mock=True) ## use_mock=True (MockLLM mode), GEMINI_API_KEY (Gemini mode)
 
-jira = JiraService(
-    base_url=JIRA_BASE_URL,
-    email=JIRA_EMAIL,
-    api_token=JIRA_API_TOKEN,
-    project_key=JIRA_PROJECT_KEY
-)
+jira = get_jira_service()
 
 
 def run(issue_key: str):
