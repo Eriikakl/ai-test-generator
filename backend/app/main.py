@@ -35,6 +35,28 @@ def generate_test_cases_endpoint(issue_key: str):
         "test_cases": test_cases
     }
 
+@app.post("/generate/usability-tests/{issue_key}")
+def generate_usability_tests_endpoint(issue_key: str):
+    story = jira.get_story(issue_key)
+
+    test_cases = generate_test_cases(llm, story)
+    test_case_texts = [t["test_case"] for t in test_cases]
+
+    usability_tests = generate_usability_tests(
+        llm,
+        story,
+        test_case_texts
+    )
+
+    return {
+        "issue_key": issue_key,
+        "usability_tests": usability_tests
+    }
+
+
+##@app.post("/generate/robot")
+
+
 @app.post("/generate")
 def generate(story: Story):
     test_cases = generate_test_cases(llm, story)
