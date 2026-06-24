@@ -112,7 +112,9 @@ class JiraService:
             )
 
             test_key = issue["key"]
-            created.append(test_key)
+            tc["test_key"] = test_key
+            
+            created.append(tc)
 
             print("Created:", test_key)
             self.link_issues(story.issue_key, test_key)
