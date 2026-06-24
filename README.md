@@ -40,13 +40,12 @@ backend/
 │       ├── test_generation_service.py
 │
 │   ├── config.py
-│   ├── csv_reader.py
-│   ├── csv_writer.py
 │   ├── llm.py
 │   ├── main.py
 │   ├── mock_llm.py
 │   ├── prompt_builder.py
 │   ├── run_from_jira.py
+│   ├── services.py
 │
 ├── stories/
 │   └── user_stories.csv
@@ -62,24 +61,29 @@ backend/
 ### Backend
 
 - Python
-- Requests
 - FastAPI
-
+- Requests (Jira API)
 
 ### AI
 
 Nykyinen:
 - Google Gemini API
-- MockLLM
+- MockLLM (Kehitys ja testaus)
 
 ### Data
 
 Nykyinen:
-- CSV
+- CSV (testaus)
 - JSON
 
 Suunnitteilla:
 - PostgreSQL
+
+### Frontend
+
+- TypeScript
+- React
+- Vite
 
 ## Jira
 
@@ -204,20 +208,17 @@ Aktivointi:
 ```
 
 
-### 3. Asennetaan riippuvuudet
+### 3. Asennetaan riippuvuudet /backend
+
+```bash
+pip install fastapi uvicorn requests python-dotenv google-genai
+```
+
 
 #### Vain Jira-workflow:
 ```bash
-pip install requests
-
-pip install python-dotenv
+pip install requests python-dotenv google-genai
 ```
-
----
-```bash
-pip install google-genai
-```
-
 ---
 
 ### 4. Ympäristömuuttujat
@@ -235,7 +236,24 @@ GEMINI_API_KEY=your_api_token_here
 
 ## Suoritus
 
-### Ajetaan batch-ajona / Backend
+### Käynnistetään FastAPI /backend
+
+```bash
+uvicorn app.main:app --reload
+```
+
+---
+
+### Käynnistetään /frontend
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+### Ajetaan batch-ajona /backend (testaus)
 
 #### CSV
 
