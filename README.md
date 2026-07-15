@@ -103,6 +103,7 @@ Suunnitteilla:
 ```
 ### Arkkitehtuuri
 
+#### Yksittäisen käyttäjätarinan käsittely
 ```text
 Jira User Story (ABC-1)
       ↓
@@ -117,6 +118,26 @@ LLM Service (Gemini)
 Test Case Generation
       ↓
 JiraService (POST /issue)
+```
+#### Automaattinen Jira-synkronointi
+```text
+FastAPI
+      ↓
+Jira Sync
+      ↓
+JiraService (GET /search/jql)
+      ↓
+Story (domain model)
+      ↓
+Prompt Builder
+      ↓
+LLM Service (Gemini / MockLLM)
+      ↓
+Test Case Generation
+      ↓
+JiraService (POST /issue)
+      ↓
+JiraService (POST /issueLink)
 ```
 
 ### Tulokset
