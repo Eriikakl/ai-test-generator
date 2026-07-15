@@ -70,6 +70,36 @@ class JiraService:
             priority=(fields.get("priority") or {}).get("name", "Medium"),
             status=(fields.get("status") or {}).get("name", "To Do")
         )
+    
+    ## get new stories from Jira
+    def get_new_stories(self) -> list[Story]:
+        url = f"{self.base_url}/rest/api/3/search/jql"
+
+        jql = (
+            f'project = {self.project_key} '
+            'AND issuetype = Story '
+        )
+
+        response = requests.get(
+            url,
+            auth=self.auth,
+            headers=self.headers,
+            params={"jql": jql,
+                    "fields": "key"}
+        )
+
+        response.raise_for_status()
+
+        issues = response.json()["issues"]
+
+        stories = []
+
+        for issue in issues:
+            story = self.get_story(issue["key"])
+            stories.append(story)
+
+        return stories
+    
 
     ## create test case
     def create_test_case(self, summary: str, description: dict):
@@ -181,3 +211,7 @@ class JiraService:
             issues.append(response.json())
 
         return issues
+    
+    ## check if the story has test cases
+    def has_test_cases(self, issue_key: str) -> bool:
+        return len(self.get_test_cases(issue_key)) > 0
