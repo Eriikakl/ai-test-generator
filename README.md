@@ -137,6 +137,17 @@ POST /jira/webhook
 
 ---
 
+**Jira Sync**
+
+```http
+POST /jira/sync
+```
+
+- Synkronoi käsittelemättömät käyttäjätarinat Jirasta.
+- Luo testitapaukset automaattisesti uusille käyttäjätarinoille.
+
+---
+
 **Testitapausten hakeminen**
 
 ```http
@@ -230,7 +241,8 @@ GEMINI_API_KEY=your_api_token_here
 ```bash
 uvicorn app.main:app --reload
 ```
-
+- Käynnistyksen yhteydessä sovellus aloittaa automaattisen Jira-synkronoinnin.
+- Synkronointi suoritetaan minuutin välein taustalla.
 ---
 
 ### Käynnistetään /frontend
