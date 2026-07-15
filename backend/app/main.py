@@ -5,12 +5,24 @@ from app.domain.story import Story
 from fastapi.middleware.cors import CORSMiddleware
 from app.services import get_jira_service
 
+import asyncio
+from contextlib import asynccontextmanager
+
 from app.service.test_generation_service import (
     generate_test_cases,
     generate_usability_tests
 )
 
-app = FastAPI()
+## taustasynkronointi sovelluksen käynnistyessä
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    task = asyncio.create_task(sync_loop())
+
+    yield
+
+    task.cancel()
+
+app = FastAPI(lifespan=lifespan) ## lifespan=lifespan
 llm = LLMService(use_mock=True) ## GEMINI_API_KEY (Gemini mode)
 jira = get_jira_service()
 
@@ -40,6 +52,17 @@ def jira_webhook(payload: dict):
         "status": "success",
         "issue_key": issue_key,
         "test_cases_created": len(test_cases)
+    }
+
+## Automaattinen Jira-synkronointi
+@app.post("/jira/sync")
+def sync():
+
+    processed = sync_stories()
+
+    return {
+        "status": "success",
+        "stories_processed": processed
     }
 
 @app.get("/test-cases/{issue_key}")
@@ -113,3 +136,38 @@ def generate(story: Story):
         "test_cases": test_cases,
         "usability_tests": usability_tests
     }
+
+    ## 
+
+## Synkronoidaan käsittelemättömät käyttäjätarinat
+def sync_stories():
+
+    stories = jira.get_new_stories()
+
+    processed = 0
+
+    for story in stories:
+
+        if jira.has_test_cases(story.issue_key):
+            print(f"{story.issue_key} already processed.")
+            continue
+
+        test_cases = generate_test_cases(llm, story)
+        jira.push_test_cases(story, test_cases)
+
+        processed += 1
+
+    return processed
+
+## Jira-synkronointi minuutin välein taustalla
+async def sync_loop():
+    while True:
+        try:
+            processed = await asyncio.to_thread(sync_stories)
+            print(f"Jira sync completed. Processed {processed} stories.")
+        except Exception as e:
+            print(f"Jira sync failed: {e}")
+
+        await asyncio.sleep(60)
+
+
