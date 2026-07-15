@@ -14,6 +14,11 @@ Jira-pohjainen test case -generointi:
 - Luo käyttäjätarinan pohjalta test case-issuen
 - Luo Jiraan Task:it testitapauksista linkittäen ne alkuperäiseen käyttäjätarinaan
 
+FastAPI toimii sovelluksen API-rajapintana ja mahdollistaa Jira-integraation.
+
+---
+Kehitystä ja testausta varten projekti sisältää myös CSV-pohjaisen generointityönkulun.
+
 CSV-pohjainen testidatan generointi:
 - Lukee käyttäjätarinat CSV-tiedostosta
 - Käyttää MockLLM-komponenttia testidatan generointiin
@@ -21,8 +26,6 @@ CSV-pohjainen testidatan generointi:
       - `test_cases.csv`
       - `usability_tests.csv`
       - `generated_tests.robot`
-
- FastAPI on valmisteltu tulevaa API-rajapintaa ja integraatioita varten.
 
 ## Projektirakenne
 
@@ -121,6 +124,133 @@ JiraService (POST /issue)
 **Jira:**
 ![alt text](/screenshots/Jira.png)
 
+## API
+
+**Jira Webhook**
+
+```http
+POST /jira/webhook
+```
+
+- Valmisteltu endpoint Jira-automaatiota varten.
+- Tarkoituksena käsitellä uudet käyttäjätarinat automaattisesti.
+
+---
+
+**Testitapausten hakeminen**
+
+```http
+GET /test-cases/{issue_key}
+```
+
+- Hakee käyttäjätarinaan linkitetyt testitapaukset annetun tunnuksen perusteella.
+
+---
+
+**Käytettävyystestien generointi**
+
+```http
+POST /generate/usability-tests/{issue_key}
+```
+
+- Hakee käyttäjätarinaan linkitetyt testitapaukset.
+- Generoi käytettävyystestit niiden perusteella.
+
+---
+
+**Testitapausten generointi (kehitykseen)**
+
+```http
+POST /generate/test-cases/{issue_key}
+```
+
+- Hakee käyttäjätarinan Jirasta annetun tunnuksen perusteella.
+- Generoi ja tallentaa testitapaukset Jiraan.
+
+---
+
+**Testidatan generointi (testaus)**
+
+```http
+POST /generate
+```
+
+- Vastaanottaa Story-olion ilman Jira-integraatiota.
+- Generoi testitapaukset ja käytettävyystestit.
+
+---
+
+## Setup
+
+### 1. Kloonataan repositorio
+
+### 2. Luodaan virtuaaliympäristö
+
+```bash
+python -m venv .venv
+```
+
+Aktivointi:
+
+```bash
+. .venv/scripts/activate
+```
+
+
+### 3. Asennetaan riippuvuudet /backend
+
+```bash
+pip install fastapi uvicorn requests python-dotenv google-genai
+```
+
+
+#### Vain Jira-workflow:
+```bash
+pip install requests python-dotenv google-genai
+```
+---
+
+### 4. Ympäristömuuttujat
+Projektiin on luotu `.env` tiedosto Jira-asetusten turvalliseen käyttöön: 
+
+```env
+JIRA_BASE_URL=https://your-domain.atlassian.net
+JIRA_EMAIL=your.email@example.com
+JIRA_API_TOKEN=your_api_token_here
+JIRA_PROJECT_KEY=ABC
+
+GEMINI_API_KEY=your_api_token_here
+```
+
+
+## Suoritus
+
+### Käynnistetään FastAPI /backend
+
+```bash
+uvicorn app.main:app --reload
+```
+
+---
+
+### Käynnistetään /frontend
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+### Ajetaan batch-ajona /backend (testaus)
+
+#### Jira 
+```bash
+python -m app.run_from_jira
+```
+
+---
+
 ## CSV
 ### Käyttäjätarinan formaatti
 
@@ -190,69 +320,6 @@ CSV ja Robot Framework File - Tuotokset
 
 -  *LLM Service: MockLLM (simuloitu AI)
 
-## Setup
-
-### 1. Kloonataan repositorio
-
-### 2. Luodaan virtuaaliympäristö
-
-```bash
-python -m venv .venv
-```
-
-Aktivointi:
-
-**Windows:**
-```bash
-. .venv/scripts/activate
-```
-
-
-### 3. Asennetaan riippuvuudet /backend
-
-```bash
-pip install fastapi uvicorn requests python-dotenv google-genai
-```
-
-
-#### Vain Jira-workflow:
-```bash
-pip install requests python-dotenv google-genai
-```
----
-
-### 4. Ympäristömuuttujat
-Projektiin on luotu `.env` tiedosto Jira-asetusten turvalliseen käyttöön: 
-
-```env
-JIRA_BASE_URL=https://your-domain.atlassian.net
-JIRA_EMAIL=your.email@example.com
-JIRA_API_TOKEN=your_api_token_here
-JIRA_PROJECT_KEY=ABC
-
-GEMINI_API_KEY=your_api_token_here
-```
-
-
-## Suoritus
-
-### Käynnistetään FastAPI /backend
-
-```bash
-uvicorn app.main:app --reload
-```
-
----
-
-### Käynnistetään /frontend
-
-```bash
-npm install
-npm run dev
-```
-
----
-
 ### Ajetaan batch-ajona /backend (testaus)
 
 #### CSV
@@ -262,12 +329,4 @@ python -m app.csv_pipeline.generate_from_csv
 ```
 
 ---
-
-#### Jira 
-```bash
-python -m app.run_from_jira
-```
-
----
-
 
