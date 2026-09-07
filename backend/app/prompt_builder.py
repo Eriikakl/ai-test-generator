@@ -12,15 +12,24 @@ def build_test_case_prompt(story: Story) -> str:
             Description: {story.description}
             Priority: {story.priority}
 
-            Generate detailed software TEST CASES including positive and negative scenarios.
-            Each test case must be a clear and testable sentence.
+            Generate 3-5 detailed software TEST CASES including positive and negative scenarios.
+            Each test case must be clear, testable, and cover a distinct scenario without duplication.
+            Each test case MUST contain:
+            - A short summary of maximum 100 characters
+            - A detailed test case description
+
             Return ONLY valid JSON in the following format:
 
             {{
             "test_cases": [
-                "test case 1",
-                "test case 2",
-                "test case 3"
+                {{
+                    "summary": "Short test case summary",
+                    "description": "Detailed test case including preconditions, steps and expected results"
+                }},
+                {{
+                    "summary": "Short test case summary",
+                    "description": "Detailed test case including preconditions, steps and expected results"
+                }}
             ]
             }}
 
@@ -32,9 +41,13 @@ def build_test_case_prompt(story: Story) -> str:
 ## Usability test generation prompt
 def build_usability_prompt(story: Story, test_cases: list) -> str:
 
-    test_cases_text = "\n".join(test_cases)
+    test_cases_text = "\n".join(
+        f"{tc['key']}: {tc['summary']}"
+        for tc in test_cases
+    )
 
     return f"""
+    
             Issue Key: {story.issue_key}
             Summary: {story.summary}
             Description: {story.description}
@@ -43,7 +56,9 @@ def build_usability_prompt(story: Story, test_cases: list) -> str:
             TEST CASES:
             {test_cases_text}
 
-            Generate USABILITY TESTS based on the above test cases.
+            Generate 1-3 high-value USABILITY TESTS based on the above test cases.
+            Do not generate multiple usability tests that evaluate the same user experience.
+            Prioritize the most important and relevant usability aspects.
 
             Focus on:
             - user experience
@@ -51,33 +66,27 @@ def build_usability_prompt(story: Story, test_cases: list) -> str:
             - discoverability
             - error understanding
 
-             Return ONLY valid JSON in the following format:
+            Return ONLY valid JSON in the following format:
 
             {{
-           "usability_tests": [
-            "test 1",
-            "test 2",
-            "test 3"
-            ]
+                "usability_tests": [
+                    {{
+                        "test": "usability test description",
+                        "test_case_keys": ["TC-101", "TC-102"]
+                    }},
+                    {{
+                        "test": "usability test description",
+                        "test_case_keys": ["TC-103"]
+                    }}
+                ]
             }}
 
             IMPORTANT:
             Do not use markdown.
             Do not add explanations.
+            Only use test case keys provided in the TEST CASES.
             """
 
 ## Robot Framework generation prompt
-def build_robot_prompt(story: Story) -> str:
-    return f"""
-            Issue Key: {story.issue_key}
-            Summary: {story.summary}
-            Description: {story.description}
-            Priority: {story.priority}
-
-            Generate ROBOT FRAMEWORK test script.
-
-            Use format:
-            *** Test Cases ***
-            Example Test
-                Open Browser    http://example.com
-            """
+## Robot Framework integration is planned for a later development phase.
+## The current implementation focuses on test case and usability test generation.
