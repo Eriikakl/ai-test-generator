@@ -24,8 +24,14 @@ class MockLLM:
     def login_case(self):
             return {
                 "test_cases": [
-                    "User can login with valid credentials",
-                    "Invalid password shows error"
+                    {
+                        "summary": "User can log in with valid credentials",
+                        "description": "Precondition: User has a valid account. Steps: Enter valid username and password and submit the login form. Expected result: User is successfully logged in."
+                    },
+                    {
+                        "summary": "Invalid password displays an error",
+                        "description": "Precondition: User has a valid account. Steps: Enter a valid username and an incorrect password and submit the login form. Expected result: A clear error message is displayed and the user is not logged in."
+                    }
                 ],
                 "robot_framework": """
                 *** Test Cases ***
@@ -33,8 +39,14 @@ class MockLLM:
                     Open Browser    http://example.com
                 """,
                 "usability_tests": [
-                    "Can user find login button?",
-                    "Is login form understandable?"
+                    {
+                        "test": "User can easily understand and complete the login process.",
+                        "test_case_keys": ["ABC-10", "ABC-11"]
+                    },
+                    {
+                        "test": "User understands the error message when an invalid password is entered.",
+                        "test_case_keys": ["ABC-11"]
+                    }
                 ]
             }
     # User can reset password
