@@ -125,6 +125,11 @@ class JiraService:
             headers=self.headers
         )
 
+        if not response.ok:
+            print("Jira error status:", response.status_code)
+            print("Jira response:", response.text)
+            print("Jira payload:", payload)
+
         response.raise_for_status()
         return response.json()
 
@@ -137,7 +142,7 @@ class JiraService:
 
         for tc in test_cases:
             issue = self.create_test_case(
-                summary=f"[TEST] {tc['test_case']}",
+                summary=f"[TEST] {tc['summary']}",
                 description=build_description(story.issue_key, story)
             )
 
