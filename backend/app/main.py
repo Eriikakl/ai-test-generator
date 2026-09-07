@@ -86,15 +86,17 @@ def generate_usability_tests_endpoint(issue_key: str):
 
     story = jira.get_story(issue_key)
     test_cases = jira.get_test_cases(issue_key)
-    test_case_texts = [
-        tc["fields"]["summary"]
-        for tc in test_cases
+    test_cases_for_prompt = [
+    {
+        "key": tc["key"],
+        "summary": tc["fields"]["summary"]
+    }
+    for tc in test_cases
     ]
-    print(test_case_texts)
     usability_tests = generate_usability_tests(
         llm,
         story,
-        test_case_texts
+        test_cases_for_prompt
     )
 
     return {
