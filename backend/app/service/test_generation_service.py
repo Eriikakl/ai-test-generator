@@ -1,8 +1,8 @@
 
+
 from app.prompt_builder import (
     build_test_case_prompt,
-    build_usability_prompt,
-    build_robot_prompt
+    build_usability_prompt
 )
 
 
@@ -15,7 +15,8 @@ def generate_test_cases(llm, story):
         {
             "story_key": story.issue_key,
             "story_title": story.summary,
-            "test_case": test_case,
+            "summary": test_case["summary"],
+            "test_case": test_case["description"],
             "priority": story.priority
         }
         for test_case in result.get("test_cases", [])
@@ -24,24 +25,20 @@ def generate_test_cases(llm, story):
 
 def generate_usability_tests(llm, story, test_cases):
 
-    test_cases_text = "\n".join(test_cases)
-    prompt = build_usability_prompt(story, test_cases_text)
+    prompt = build_usability_prompt(story, test_cases)
     result = llm.generate(prompt)
 
     return [
         {
             "story_key": story.issue_key,
             "story_title": story.summary,
-            "usability_test": usability_test,
+            "usability_test": usability_test["test"],
+            "test_case_keys": usability_test["test_case_keys"],
             "priority": story.priority
         }
         for usability_test in result.get("usability_tests", [])
     ]
 
 
-def generate_robot_test(llm, story):
-
-    prompt = build_robot_prompt(story)
-    result = llm.generate(prompt)
-
-    return result.get("robot_framework", "")
+## Robot Framework integration is planned for a later development phase.
+## The current implementation focuses on test case and usability test generation.
