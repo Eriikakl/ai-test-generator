@@ -1,6 +1,8 @@
 # AI Test Generator
 
-Tavoitteena on rakentaa AI-pohjainen automaatioputki käyttäjätarinoiden muuttamiseksi testitapauksiksi sekä mahdollistaa integraatio Jiraan. Tarkoituksena on lisäksi, että testitapauksista voidaan luoda pyynnöstä käyttöliittymän kautta käytettävyystestit sekä testiscriptit.
+AI-pohjainen testiautomaatioprojekti, joka yhdistää Jira-integraation ja LLM-pohjaisen testitapausten generoinnin. Jiran käyttäjätarinoista generoidaan testitapauksia automaattisesti, luodaan ne Jiraan ja linkitetään takaisin alkuperäisiin käyttäjätarinoihin.
+
+Projektia on suunniteltu laajennettavaksi myös käytettävyystestien ja testiscriptien generointiin.
 
 ## Nykyinen tilanne
 
