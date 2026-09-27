@@ -176,6 +176,8 @@ async def sync_loop():
             processed = await asyncio.to_thread(sync_stories)
             print(f"Jira sync completed. Processed {processed} stories.")
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             print(f"Jira sync failed: {e}")
 
         await asyncio.sleep(60)
