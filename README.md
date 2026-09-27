@@ -18,7 +18,7 @@ Jira-pohjainen test case -generointi:
 - Luo käytettävyystesteistä Jiraan Task-issuet ja linkittää ne alkuperäiseen käyttäjätarinaan
 - Käytettävyystestien generointi voidaan käynnistää käyttöliittymästä tai suoraan FastAPI-endpointin kautta
 
-[Katso projektin nykyinen tila](docs/results.md) 
+[Katso projektin nykyinen tila](docs/Results.md) 
 
 ---
 Kehitystä ja testausta varten projekti sisältää myös CSV-pohjaisen generointityönkulun.
