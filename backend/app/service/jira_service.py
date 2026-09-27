@@ -41,6 +41,29 @@ def build_description(issue_key: str, story: Story):
         ]
     }
 
+## built Jira compatible description for usability tests
+def build_usability_description(issue_key: str, story: Story, usability_test: str):
+
+    text = f"""Generated from story: {issue_key} {story.summary}
+
+            Usability test: {usability_test}"""
+
+    return {
+        "type": "doc",
+        "version": 1,
+        "content": [
+            {
+                "type": "paragraph",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": text
+                    }
+                ]
+            }
+        ]
+    }
+
 class JiraService:
 
     def __init__(self, base_url: str, email: str, api_token: str, project_key: str):
@@ -223,3 +246,34 @@ class JiraService:
     ## check if the story has test cases
     def has_test_cases(self, issue_key: str) -> bool:
         return len(self.get_test_cases(issue_key)) > 0
+
+    ## push usability tests to Jira
+    def push_usability_tests(self, story: Story, usability_tests):
+
+        print(f"\n Pushing usability tests for {story.issue_key}")
+
+        created = []
+
+        for ut in usability_tests:
+            issue = self.create_test_case(
+                summary=f"[USABILITY] {ut['usability_test']}",
+                description=build_usability_description(
+                    story.issue_key,
+                    story
+                )
+            )
+
+            usability_key = issue["key"]
+            ut["usability_test_key"] = usability_key
+
+            created.append(ut)
+
+            print("Created:", usability_key)
+
+            self.link_issues(story.issue_key, usability_key)
+
+            print(f"Linked {story.issue_key} -> {usability_key}")
+
+        print("\nDONE")
+
+        return created
