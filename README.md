@@ -13,8 +13,10 @@ Tällä hetkellä projekti koostuu kahdesta eri workflow:sta.
 Jira-pohjainen test case -generointi:
 - Hakee Jira API:sta käyttäjätarinan
 - Generoi testitapaukset LLM:n (Gemini) avulla
-- Luo käyttäjätarinan pohjalta test case-issuen
-- Luo Jiraan Task:it testitapauksista linkittäen ne alkuperäiseen käyttäjätarinaan
+- Luo Jiraan Task-issuet testitapauksista ja linkittää ne alkuperäiseen käyttäjätarinaan
+- Hakee käyttäjätarinan testitapaukset ja generoi niiden sekä alkuperäisen käyttäjätarinan pohjalta käytettävyystestit
+- Luo käytettävyystesteistä Jiraan Task-issuet ja linkittää ne alkuperäiseen käyttäjätarinaan
+- Käytettävyystestien generointi voidaan käynnistää käyttöliittymästä tai suoraan FastAPI-endpointin kautta
 
 ### Nykyinen flow 
 
@@ -208,8 +210,12 @@ GET /test-cases/{issue_key}
 POST /generate/usability-tests/{issue_key}
 ```
 
+- Hakee käyttäjätarinan Jira API:sta.
 - Hakee käyttäjätarinaan linkitetyt testitapaukset.
-- Generoi käytettävyystestit niiden perusteella.
+- Generoi käytettävyystestit käyttäjätarinan ja testitapausten perusteella LLM:n (Gemini) avulla.
+- Luo generoiduista käytettävyystesteistä Jiraan Task-issuet.
+- Linkittää käytettävyystestit alkuperäiseen käyttäjätarinaan
+- Palauttaa luodut käytettävyystestit API-vastauksena.
 
 ---
 
