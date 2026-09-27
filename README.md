@@ -16,19 +16,33 @@ Jira-pohjainen test case -generointi:
 - Luo käyttäjätarinan pohjalta test case-issuen
 - Luo Jiraan Task:it testitapauksista linkittäen ne alkuperäiseen käyttäjätarinaan
 
+### Nykyinen flow 
+
+#### Testitapausten luonti
+
 **Terminaali:**
 
 ![Terminaali-näkymä, jossa tulostuu tiedot Jira synkronoinnista.](/screenshots/terminal.png)
 
 **Jira-näkymä:**
 
-![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset](/screenshots/Jira2.png)
+![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset](/screenshots/Jira.png)
 
 **Käyttöliittymä:**
 
 ![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI.png)
 
-FastAPI toimii sovelluksen API-rajapintana ja mahdollistaa Jira-integraation.
+#### Käytettävyysluonti 
+
+**Käyttöliittymä: Huom. Gemini API käytössä tässä**
+
+![Käyttöliittymä demo, josta luodaan käytettävyystestit](/screenshots/UI2.png)
+
+**Terminaali:**
+
+![Terminaali-näkymä, jossa linkitetään käytettävyystestit käyttäjätarinaan](/screenshots/terminal_usability.png)
+
+
 
 ---
 Kehitystä ja testausta varten projekti sisältää myös CSV-pohjaisen generointityönkulun.
@@ -153,11 +167,6 @@ JiraService (POST /issue)
       ↓
 JiraService (POST /issueLink)
 ```
-
-### Tulokset
-
-**Jira:**
-![alt text](/screenshots/Jira.png)
 
 ## API
 
