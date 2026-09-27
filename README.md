@@ -18,33 +18,7 @@ Jira-pohjainen test case -generointi:
 - Luo käytettävyystesteistä Jiraan Task-issuet ja linkittää ne alkuperäiseen käyttäjätarinaan
 - Käytettävyystestien generointi voidaan käynnistää käyttöliittymästä tai suoraan FastAPI-endpointin kautta
 
-### Nykyinen flow 
-
-#### Testitapausten luonti
-
-**Terminaali:**
-
-![Terminaali-näkymä, jossa tulostuu tiedot Jira synkronoinnista.](/screenshots/terminal.png)
-
-**Jira-näkymä:**
-
-![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset](/screenshots/Jira2.png)
-
-**Käyttöliittymä:**
-
-![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI.png)
-
-#### Käytettävyysluonti 
-
-**Käyttöliittymä: Huom. Gemini API käytössä tässä**
-
-![Käyttöliittymä demo, josta luodaan käytettävyystestit](/screenshots/UI2.png)
-
-**Terminaali:**
-
-![Terminaali-näkymä, jossa linkitetään käytettävyystestit käyttäjätarinaan](/screenshots/terminal_usability.png)
-
-
+[Katso projektin nykyinen tila](docs/results.md) 
 
 ---
 Kehitystä ja testausta varten projekti sisältää myös CSV-pohjaisen generointityönkulun.
