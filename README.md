@@ -26,7 +26,7 @@ Jira-pohjainen test case -generointi:
 
 **Jira-näkymä:**
 
-![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset](/screenshots/Jira.png)
+![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset](/screenshots/Jira2.png)
 
 **Käyttöliittymä:**
 
