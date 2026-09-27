@@ -81,27 +81,35 @@ def get_test_cases_endpoint(issue_key: str):
         ]
     }
 
-@app.post("/generate/usability-tests/{issue_key}")
-def generate_usability_tests_endpoint(issue_key: str):
+@app.post("/generate/usability-tests/{issue_key}") 
+def generate_usability_tests_endpoint(issue_key: str): 
+ 
+    story = jira.get_story(issue_key) 
+    test_cases = jira.get_test_cases(issue_key) 
 
-    story = jira.get_story(issue_key)
-    test_cases = jira.get_test_cases(issue_key)
-    test_cases_for_prompt = [
-    {
-        "key": tc["key"],
-        "summary": tc["fields"]["summary"]
-    }
-    for tc in test_cases
-    ]
-    usability_tests = generate_usability_tests(
-        llm,
-        story,
-        test_cases_for_prompt
+    test_cases_for_prompt = [ 
+        { 
+            "key": tc["key"], 
+            "summary": tc["fields"]["summary"] 
+        } 
+        for tc in test_cases 
+    ] 
+
+    usability_tests = generate_usability_tests( 
+        llm, 
+        story, 
+        test_cases_for_prompt 
     )
 
-    return {
-        "issue_key": issue_key,
-        "usability_tests": usability_tests
+    # Push usability tests to Jira
+    created_usability_tests = jira.push_usability_tests(
+        story,
+        usability_tests
+    )
+ 
+    return { 
+        "issue_key": issue_key, 
+        "usability_tests": created_usability_tests
     }
 
 
