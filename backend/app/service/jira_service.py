@@ -213,8 +213,11 @@ class JiraService:
             url = f"{self.base_url}/rest/api/3/issue/{key}"
             response = requests.get(url, auth=self.auth)
             response.raise_for_status()
-            issues.append(response.json())
+            issue = response.json()
+            summary = issue["fields"].get("summary", "")
 
+            if summary.startswith("[TEST]"):
+                issues.append(issue)
         return issues
     
     ## check if the story has test cases
