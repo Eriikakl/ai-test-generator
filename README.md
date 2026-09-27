@@ -20,13 +20,13 @@ Jira-pohjainen test case -generointi:
 
 ![Terminaali-näkymä, jossa tulostuu tiedot Jira synkronoinnista.](/screenshots/terminal.png)
 
-**Käyttöliittymä:**
-
-![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI.png)
-
 **Jira-näkymä:**
 
 ![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset](/screenshots/Jira2.png)
+
+**Käyttöliittymä:**
+
+![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI.png)
 
 FastAPI toimii sovelluksen API-rajapintana ja mahdollistaa Jira-integraation.
 
