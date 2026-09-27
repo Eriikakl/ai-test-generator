@@ -42,11 +42,9 @@ def build_description(issue_key: str, story: Story):
     }
 
 ## built Jira compatible description for usability tests
-def build_usability_description(issue_key: str, story: Story, usability_test: str):
+def build_usability_description(issue_key: str, story: Story):
 
-    text = f"""Generated from story: {issue_key} {story.summary}
-
-            Usability test: {usability_test}"""
+    text = f"Generated from story: {issue_key} {story.summary}"
 
     return {
         "type": "doc",
