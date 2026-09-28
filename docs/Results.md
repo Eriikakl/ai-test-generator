@@ -4,7 +4,7 @@
 
 **Jira: luodaan käyttäjätarinasta issue (Story)**
 
-![Jira-näkymä](/screenshots/jira_create_story.png)
+![Jira-näkymä](/screenshots/Jira_create_story.png)
 
 
 **Terminaali: tulostetaan terminaaliin tiedot Jira synkronoinnista**
