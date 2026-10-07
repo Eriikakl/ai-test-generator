@@ -33,6 +33,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 ## Jira webhook for automatic test case generation
 ## Endpoint is available but not currently configured in Jira
 @app.post("/jira/webhook")
