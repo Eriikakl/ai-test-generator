@@ -39,20 +39,22 @@ backend/
 │   ├── csv_pipeline/
 │       ├── csv_reader.py
 │       ├── csv_writer.py
-│       ├── generate_from_csv.py
+│       └── generate_from_csv.py
+│
 │   ├── domain/
 │       └── story.py
+│
+│   ├── llm/
+│       ├── llm_service.py
+│       ├── mock_llm.py
+│       └── prompt_builder.py
+│
 │   ├── service/
 │       ├── jira_service.py
-│       ├── test_generation_service.py
+│       └── test_generation_service.py
 │
 │   ├── config.py
-│   ├── llm.py
 │   ├── main.py
-│   ├── mock_llm.py
-│   ├── prompt_builder.py
-│   ├── run_from_jira.py
-│   ├── services.py
 │
 ├── stories/
 │   └── user_stories.csv
@@ -60,7 +62,7 @@ backend/
 ├── output/
 │   ├── test_cases.csv
 │   ├── usability_tests.csv
-│   ├── generated_tests.robot
+│   └── generated_tests.robot
 ```
 
 ## Teknologiat
@@ -178,40 +180,31 @@ GET /test-cases/{issue_key}
 
 ---
 
+**Testitapausten generointi**
+
+```http
+POST /generate/test-cases/{issue_key}
+```
+
+- Hakee käyttäjätarinan Jira API:sta annetun tunnuksen perusteella.
+- Generoi testitapaukset käyttäjätarinan perusteella LLMn avulla.
+- Luo generoiduista testitapauksista Jiraan Task-issuet.
+- Linkittää testitapaukset alkuperäiseen käyttäjätarinaan.
+
+---
+
 **Käytettävyystestien generointi**
 
 ```http
 POST /generate/usability-tests/{issue_key}
 ```
 
-- Hakee käyttäjätarinan Jira API:sta.
+- Hakee käyttäjätarinan Jira API:sta annetun tunnuksen perusteella.
 - Hakee käyttäjätarinaan linkitetyt testitapaukset.
-- Generoi käytettävyystestit käyttäjätarinan ja testitapausten perusteella LLM:n (Gemini) avulla.
+- Generoi käytettävyystestit käyttäjätarinan ja testitapausten perusteella LLMn avulla.
 - Luo generoiduista käytettävyystesteistä Jiraan Task-issuet.
 - Linkittää käytettävyystestit alkuperäiseen käyttäjätarinaan
 - Palauttaa luodut käytettävyystestit API-vastauksena.
-
----
-
-**Testitapausten generointi (kehitykseen)**
-
-```http
-POST /generate/test-cases/{issue_key}
-```
-
-- Hakee käyttäjätarinan Jirasta annetun tunnuksen perusteella.
-- Generoi ja tallentaa testitapaukset Jiraan.
-
----
-
-**Testidatan generointi (testaus)**
-
-```http
-POST /generate
-```
-
-- Vastaanottaa Story-olion ilman Jira-integraatiota.
-- Generoi testitapaukset ja käytettävyystestit.
 
 ---
 
@@ -274,15 +267,6 @@ uvicorn app.main:app --reload
 ```bash
 npm install
 npm run dev
-```
-
----
-
-### Ajetaan batch-ajona /backend (testaus)
-
-#### Jira 
-```bash
-python -m app.run_from_jira
 ```
 
 ---
