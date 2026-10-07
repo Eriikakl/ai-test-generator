@@ -35,7 +35,7 @@ def extract_text(adf):
     except Exception:
         return ""
 
-## built Jira compatible description
+## built Jira compatible description for test cases
 def build_description(issue_key: str, story: Story):
 
     text = f"""Generated from story: {issue_key} {story.summary}"""
@@ -78,7 +78,7 @@ def build_usability_description(issue_key: str, story: Story):
     }
 
 class JiraService:
-
+    ## Jira connection settings
     def __init__(self, base_url: str, email: str, api_token: str, project_key: str):
         self.base_url = base_url.rstrip("/")
         self.project_key = project_key
@@ -194,7 +194,7 @@ class JiraService:
         print("\nDONE")
         return created
     
-    ## created Jira issue link between user story and test case
+    ## created Jira issue link between user story and test case or usability test
     def link_issues(self, story_key: str, test_key: str):
 
             url = f"{self.base_url}/rest/api/3/issueLink"
