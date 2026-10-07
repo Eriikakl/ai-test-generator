@@ -1,6 +1,5 @@
 
-
-from app.prompt_builder import (
+from app.llm.prompt_builder import (
     build_test_case_prompt,
     build_usability_prompt
 )

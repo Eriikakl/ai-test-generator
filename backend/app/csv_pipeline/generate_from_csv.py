@@ -6,8 +6,8 @@ from app.csv_pipeline.csv_writer import (
     write_robot_file
 )
 
-from app.llm import LLMService
-from app.llm import LLMService
+from app.llm.llm_service import LLMService
+
 from app.service.test_generation_service import (
     generate_test_cases,
     generate_usability_tests,

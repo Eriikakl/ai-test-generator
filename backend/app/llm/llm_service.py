@@ -1,4 +1,4 @@
-from app.mock_llm import MockLLM
+from app.llm.mock_llm import MockLLM
 from google import genai
 import json
 

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.llm import LLMService
+from app.llm.llm_service import LLMService
 ## from app.config import GEMINI_API_KEY
 from fastapi.middleware.cors import CORSMiddleware
 from app.service.jira_service import get_jira_service
