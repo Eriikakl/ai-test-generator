@@ -1,6 +1,21 @@
 import requests
 from app.domain.story import Story
 
+from app.config import (
+    JIRA_BASE_URL,
+    JIRA_EMAIL,
+    JIRA_API_TOKEN,
+    JIRA_PROJECT_KEY,
+)
+
+def get_jira_service():
+    return JiraService(
+        base_url=JIRA_BASE_URL,
+        email=JIRA_EMAIL,
+        api_token=JIRA_API_TOKEN,
+        project_key=JIRA_PROJECT_KEY
+    )
+
 ## extracted text from Jira ADF description.
 def extract_text(adf):
     if not adf:
