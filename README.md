@@ -12,7 +12,7 @@ Projektia on suunniteltu laajennettavaksi testiscriptien generointiin.
 
 Tällä hetkellä projekti koostuu kahdesta eri workflow:sta.
 
-Jira-pohjainen test case -generointi:
+Jira-pohjainen testitapausten ja käytettävyystestien generointi
 - Hakee Jira API:sta käyttäjätarinan
 - Generoi testitapaukset LLM:n (Gemini) avulla
 - Luo Jiraan Task-issuet testitapauksista ja linkittää ne alkuperäiseen käyttäjätarinaan
