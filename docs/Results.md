@@ -1,43 +1,43 @@
-## Tulokset 
+## Results / Tulokset
 
-### Testitapausten luonti
+### Test Case Generation / Testitapausten luonti
 
-**Jira: luodaan käyttäjätarinasta issue (Story)**
+**Jira: Create a user story issue / luodaan käyttäjätarinasta issue**
 
-![Jira-näkymä](/screenshots/Jira_create_story.png)
+![Jira View](/screenshots/Jira_create_story.png)
 
 
-**Terminaali: tulostetaan terminaaliin tiedot Jira synkronoinnista**
+**Terminal: Jira synchronization information is printed to the terminal / tulostetaan terminaaliin tiedot Jira synkronoinnista**
 
-![Terminaali-näkymä, jossa tulostuu tiedot Jira synkronoinnista.](/screenshots/terminal_pushing_test_cases.png)
+![Terminal view showing information about Jira synchronization.](/screenshots/terminal_pushing_test_cases.png)
 
-**Jira-näkymä:**
+**Jira View**
 
-![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset](/screenshots/Jira_linked_test_cases.png)
+![Jira view of the user story with the created and linked test cases](/screenshots/Jira_linked_test_cases.png)
 
-### Käytettävyystestien luonti
+### Usability Test Generation / Käytettävyystestien luonti
 
-**Käyttöliittymä: haetaan käyttäjätarina, josta luodaan käytettävyystestit**
+**UI: Search for a user story to generate usability tests / haetaan käyttäjätarina, josta luodaan käytettävyystestit**
 
-![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_search_jira_story.png)
+![UI demo showing how test cases can be fetched from Jira by test case identifier and usability tests can be generated](/screenshots/UI_search_jira_story.png)
 
-**Käyttöliittymä: voidaan hakea luodut testitapaukset sekä generoida käytettävyystestit**
+**UI: Fetch created test cases and generate usability tests / haetaan luodut testitapaukset sekä generoida käytettävyystestit**
 
-![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_generate_usab_tests.png)
+![UI demo showing how test cases can be fetched from Jira by test case identifier and usability tests can be generated](/screenshots/UI_generate_usab_tests.png)
 
-**Käyttöliittymä: voidaan tarkastella ja muokata luotuja käytettävyystestejä**
+**UI: Review and edit generated usability tests / tarkastellaan ja muokataan luotuja käytettävyystestejä**
 
-![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_review_usab_tests.png)
+![UI demo showing how test cases can be fetched from Jira by test case identifier and usability tests can be generated](/screenshots/UI_review_usab_tests.png)
 
-**Käyttöliittymä: voidaan lähettää hyväksytyt ja muokatut käytettävyystestit Jiraan**
+**UI: Send approved and edited usability tests to Jira / lähetetään hyväksytyt ja muokatut käytettävyystestit Jiraan**
 
-![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_push_to_Jira.png)
+![UI demo showing how test cases can be fetched from Jira by test case identifier and usability tests can be generated](/screenshots/UI_push_to_Jira.png)
 
-**Terminaali:**
+**Terminal:**
 
-![Terminaali-näkymä, jossa linkitetään käytettävyystestit käyttäjätarinaan](/screenshots/terminal_pushing_usab_tests.png)
+![Terminal view showing usability tests being linked to the user story](/screenshots/terminal_pushing_usab_tests.png)
 
-**Jira-näkymä:**
+**Jira:**
 
-![Jira-näkymä käyttäjätarinasta, jossa luodut ja linkitetyt testitapaukset ja käytettävyystestit](/screenshots/Jira_linked_usab_tests.png)
+![Jira view of the user story with the created and linked test cases and usability tests](/screenshots/Jira_linked_usab_tests.png)
 
