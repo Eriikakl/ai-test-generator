@@ -290,3 +290,37 @@ class JiraService:
         print("\nDONE")
 
         return created
+
+    ## search Jira stories by summary or issue key
+    def search_stories(self, query: str, limit: int = 10):
+        url = f"{self.base_url}/rest/api/3/search/jql"
+
+        jql = (
+            f'project = {self.project_key} '
+            'AND issuetype = Story '
+            f'AND (summary ~ "{query}" OR key = "{query}") '
+            'ORDER BY created DESC'
+        )
+
+        response = requests.get(
+            url,
+            auth=self.auth,
+            headers=self.headers,
+            params={
+                "jql": jql,
+                "maxResults": limit,
+                "fields": "summary"
+            }
+        )
+
+        response.raise_for_status()
+
+        issues = response.json()["issues"]
+
+        return [
+            {
+                "key": issue["key"],
+                "summary": issue["fields"].get("summary", "")
+            }
+            for issue in issues
+    ]
