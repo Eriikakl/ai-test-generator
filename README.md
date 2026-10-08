@@ -295,7 +295,7 @@ POST /push/usability-tests/{issue_key}
 
 - Creates Jira Task issues from the approved usability tests.
 
-- **Does not yet set the priority defined by the user for the test.**
+- Set the priority defined by the user for the test.
 
 - Links the created usability tests to the original user story.
 

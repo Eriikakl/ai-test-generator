@@ -244,7 +244,7 @@ POST /push/usability-tests/{issue_key}
 - Vastaanottaa käyttöliittymässä tarkistetut käytettävyystestit.
 - Välittää vain käyttäjän hyväksymät testit Jiraan.
 - Luo hyväksytyistä käytettävyystesteistä Jira Task -issuet.
-- **Ei vielä aseta testille käyttäjän määrittämää prioriteettia.**
+- Asettaa testille käyttäjän määrittämää prioriteettia.
 - Linkittää luodut käytettävyystestit alkuperäiseen käyttäjätarinaan.
 
 ---
