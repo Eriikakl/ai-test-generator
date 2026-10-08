@@ -17,7 +17,8 @@ type UsabilityTest = {
   id: string;
   story_key: string;
   story_title: string;
-  usability_test: string;
+  title: string;
+  description: string;
   test_case_keys: string[];
   priority: string;
   status: "pending" | "approved" | "rejected";
@@ -250,7 +251,8 @@ function App() {
       .map((test) => ({
         story_key: test.story_key,
         story_title: test.story_title,
-        usability_test: test.usability_test,
+        title: test.title,
+        description: test.description,
         test_case_keys: test.test_case_keys,
         priority: test.priority,
       }));
@@ -346,8 +348,8 @@ function App() {
 
           <div
             className={`connection ${apiConnected
-                ? "connected"
-                : "disconnected"
+              ? "connected"
+              : "disconnected"
               }`}
           >
             <span className="connection-dot" />
@@ -664,9 +666,9 @@ function App() {
                     type="button"
                     key={test.id}
                     className={`usability-test ${selectedTest?.id ===
-                        test.id
-                        ? "selected"
-                        : ""
+                      test.id
+                      ? "selected"
+                      : ""
                       }`}
                     onClick={() =>
                       setSelectedTest(test)
@@ -678,7 +680,7 @@ function App() {
                       </div>
 
                       <strong>
-                        {test.usability_test}
+                        {test.title}
                       </strong>
                     </div>
 
@@ -761,16 +763,30 @@ function App() {
 
                 <div className="detail test-editor">
                   <span>
-                    Usability test
+                    Usability test title
+                  </span>
+
+                  <input
+                    className="test-editor-input"
+                    value={selectedTest.title}
+                    onChange={(event) =>
+                      updateSelectedTest(
+                        "title",
+                        event.target.value
+                      )
+                    }
+                  />
+
+                  <span>
+                    Usability test description
                   </span>
 
                   <textarea
-                    value={
-                      selectedTest.usability_test
-                    }
+                    className="test-editor-input"
+                    value={selectedTest.description}
                     onChange={(event) =>
                       updateSelectedTest(
-                        "usability_test",
+                        "description",
                         event.target.value
                       )
                     }
