@@ -199,12 +199,38 @@ POST /generate/test-cases/{issue_key}
 POST /generate/usability-tests/{issue_key}
 ```
 
-- Hakee käyttäjätarinan Jira API:sta annetun tunnuksen perusteella.
+- Hakee käyttäjätarinan Jira API annetun issue keyn perusteella.
 - Hakee käyttäjätarinaan linkitetyt testitapaukset.
-- Generoi käytettävyystestit käyttäjätarinan ja testitapausten perusteella LLMn avulla.
-- Luo generoiduista käytettävyystesteistä Jiraan Task-issuet.
-- Linkittää käytettävyystestit alkuperäiseen käyttäjätarinaan
-- Palauttaa luodut käytettävyystestit API-vastauksena.
+- Generoi käytettävyystestit käyttäjätarinan ja testitapausten perusteella LLM avulla.
+- Palauttaa generoidut käytettävyystestit käyttöliittymälle tarkistettavaksi.
+- Generoituja testejä ei tässä vaiheessa vielä luoda Jiraan.
+
+---
+
+**Käytettävyystestien lähettäminen Jiraan**
+
+```http
+POST /push/usability-tests/{issue_key}
+```
+
+- Vastaanottaa käyttöliittymässä tarkistetut käytettävyystestit.
+- Välittää vain käyttäjän hyväksymät testit Jiraan.
+- Luo hyväksytyistä käytettävyystesteistä Jira Task -issuet.
+- **Ei vielä aseta testille käyttäjän määrittämää prioriteettia.**
+- Linkittää luodut käytettävyystestit alkuperäiseen käyttäjätarinaan.
+
+---
+
+**Jira-käyttäjätarinoiden haku**
+
+```http
+GET /jira/stories/search?q={query}&limit={limit}
+```
+
+- Hakee Jira-projektista käyttäjätarinoita hakusanan tai issue keyn perusteella.
+- Rajaa haun vain Story-tyyppisiin issueihin.
+- Palauttaa löydettyjen käyttäjätarinoiden issue keyt ja otsikot API-vastauksena.
+- Käyttöliittymä hyödyntää endpointia käyttäjätarinan valintaan.
 
 ---
 
