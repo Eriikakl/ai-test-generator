@@ -1,8 +1,10 @@
 # AI Test Generator
 
-AI-pohjainen testiautomaatioprojekti, joka yhdistää Jira-integraation ja LLM-pohjaisen testitapausten generoinnin. Jiran käyttäjätarinoista generoidaan testitapauksia automaattisesti, luodaan ne Jiraan ja linkitetään takaisin alkuperäisiin käyttäjätarinoihin.
+AI-pohjainen testiautomaatioprojekti, joka yhdistää Jira-integraation ja LLM-pohjaisen testien generoinnin. Jiran käyttäjätarinoista generoidaan testitapauksia automaattisesti, luodaan ne Jiraan ja linkitetään takaisin alkuperäisiin käyttäjätarinoihin.
 
-Projektia on suunniteltu laajennettavaksi myös käytettävyystestien ja testiscriptien generointiin.
+Projektissa voidaan generoida käyttäjätarinoiden ja niihin liittyvien testitapausten perusteella käytettävyystestejä. Käytettävyystestit voidaan tarkistaa ja muokata ennen niiden viemistä Jiraan. 
+
+Projektia on suunniteltu laajennettavaksi testiscriptien generointiin.
 
 ## Nykyinen tilanne
 
@@ -14,9 +16,9 @@ Jira-pohjainen test case -generointi:
 - Hakee Jira API:sta käyttäjätarinan
 - Generoi testitapaukset LLM:n (Gemini) avulla
 - Luo Jiraan Task-issuet testitapauksista ja linkittää ne alkuperäiseen käyttäjätarinaan
-- Hakee käyttäjätarinan testitapaukset ja generoi niiden sekä alkuperäisen käyttäjätarinan pohjalta käytettävyystestit
-- Luo käytettävyystesteistä Jiraan Task-issuet ja linkittää ne alkuperäiseen käyttäjätarinaan
-- Käytettävyystestien generointi voidaan käynnistää käyttöliittymästä tai suoraan FastAPI-endpointin kautta
+- Hakee käyttäjätarinaan linkitetyt testitapaukset ja generoi niiden sekä alkuperäisen käyttäjätarinan pohjalta käytettävyystestit
+- Käytettävyystestien generointi voidaan käynnistää käyttöliittymästä tai FastAPI-endpointin kautta, minkä jälkeen testit voidaan tarkistaa, hyväksyä ja viedä Jiraan
+- Luo hyväksytyistä käytettävyystesteistä Jiraan Task-issuet ja linkittää ne alkuperäiseen käyttäjätarinaan
 
 [Katso projektin nykyinen tila](docs/Results.md) 
 
