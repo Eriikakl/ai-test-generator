@@ -57,9 +57,12 @@ def build_description(issue_key: str, story: Story):
     }
 
 ## built Jira compatible description for usability tests
-def build_usability_description(issue_key: str, story: Story):
+def build_usability_description(issue_key: str, story: Story, description: str):
 
-    text = f"Generated from story: {issue_key} {story.summary}"
+    text = (f"Generated from story: {issue_key} {story.summary}\n\n"
+            f"{description}"
+            )
+            
 
     return {
         "type": "doc",
@@ -273,10 +276,11 @@ class JiraService:
 
         for ut in usability_tests:
             issue = self.create_jira_issue(
-                summary=f"[USABILITY] {ut['usability_test']}",
+                summary=f"[USABILITY] {ut['title']}",
                 description=build_usability_description(
                     story.issue_key,
-                    story
+                    story,
+                    ut["description"]
                 ),
                 priority=ut["priority"]
             )

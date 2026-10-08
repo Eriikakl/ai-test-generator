@@ -66,16 +66,27 @@ def build_usability_prompt(story: Story, test_cases: list) -> str:
             - discoverability
             - error understanding
 
+            Each usability test MUST contain:
+            - A short and descriptive title of maximum 80 characters
+            - A detailed description explaining what the user should do and what should be evaluated
+            - The test case keys related to the usability test
+
+            The title must be concise.
+            Do not put instructions or long explanations in the title.
+            Put the detailed task and evaluation criteria in the description.
+
             Return ONLY valid JSON in the following format:
 
             {{
                 "usability_tests": [
                     {{
-                        "test": "usability test description",
+                        "title": "Short usability test title",
+                        "description": "Detailed description of the usability test, including the task and what should be evaluated.",
                         "test_case_keys": ["TC-101", "TC-102"]
                     }},
                     {{
-                        "test": "usability test description",
+                        "title": "Short usability test title",
+                        "description": "Detailed description of the usability test, including the task and what should be evaluated.",
                         "test_case_keys": ["TC-103"]
                     }}
                 ]

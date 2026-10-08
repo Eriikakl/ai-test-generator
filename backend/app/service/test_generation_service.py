@@ -31,7 +31,8 @@ def generate_usability_tests(llm, story, test_cases):
         {
             "story_key": story.issue_key,
             "story_title": story.summary,
-            "usability_test": usability_test["test"],
+            "title": usability_test["title"],
+            "description": usability_test["description"],
             "test_case_keys": usability_test["test_case_keys"],
             "priority": story.priority
         }

@@ -38,7 +38,8 @@ app.add_middleware(
 class UsabilityTest(BaseModel):
     story_key: str
     story_title: str
-    usability_test: str
+    title: str
+    description: str
     test_case_keys: list[str]
     priority: str
 
