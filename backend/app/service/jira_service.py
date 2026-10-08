@@ -138,7 +138,7 @@ class JiraService:
     
 
     ## create test case
-    def create_jira_issue(self, summary: str, description: dict):
+    def create_jira_issue(self, summary: str, description: dict, priority: str = "Medium"):
         url = f"{self.base_url}/rest/api/3/issue"
 
         payload = {
@@ -150,6 +150,9 @@ class JiraService:
                 "description": description,
                 "issuetype": {
                     "name": "Task"
+                },
+                "priority": {
+                "name": priority
                 }
             }
         }
@@ -179,7 +182,8 @@ class JiraService:
         for tc in test_cases:
             issue = self.create_jira_issue(
                 summary=f"[TEST] {tc['summary']}",
-                description=build_description(story.issue_key, story)
+                description=build_description(story.issue_key, story),
+                priority=story.priority
             )
 
             test_key = issue["key"]
@@ -273,7 +277,8 @@ class JiraService:
                 description=build_usability_description(
                     story.issue_key,
                     story
-                )
+                ),
+                priority=ut["priority"]
             )
 
             usability_key = issue["key"]
