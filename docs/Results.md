@@ -17,9 +17,21 @@
 
 ### Käytettävyystestien luonti
 
-**Käyttöliittymä: generoidaan käytettävyystestit**
+**Käyttöliittymä: haetaan käyttäjätarina, josta luodaan käytettävyystestit**
 
-![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_generated_usab_tests.png)
+![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_search_jira_story.png)
+
+**Käyttöliittymä: voidaan hakea luodut testitapaukset sekä generoida käytettävyystestit**
+
+![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_generate_usab_tests.png)
+
+**Käyttöliittymä: voidaan tarkastella ja muokata luotuja käytettävyystestejä**
+
+![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_review_usab_tests.png)
+
+**Käyttöliittymä: voidaan lähettää hyväksytyt ja muokatut käytettävyystestit Jiraan**
+
+![Käyttöliittymä demo, jossa voidaan hakea testitapauksen tunnisteen perusteella testitapaukset Jirasta sekä luoda käytettävyystestit](/screenshots/UI_push_to_Jira.png)
 
 **Terminaali:**
 
