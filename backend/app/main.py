@@ -6,6 +6,7 @@ from app.service.jira_service import get_jira_service
 
 import asyncio
 from contextlib import asynccontextmanager
+from pydantic import BaseModel
 
 from app.service.test_generation_service import (
     generate_test_cases,
@@ -33,6 +34,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+## Validate the usability test data received from the frontend before pushing approved tests to Jira
+class UsabilityTest(BaseModel):
+    story_key: str
+    story_title: str
+    usability_test: str
+    test_case_keys: list[str]
+    priority: str
+
+class PushUsabilityTestsRequest(BaseModel):
+    usability_tests: list[UsabilityTest]
+
+## Health check
 @app.get("/health")
 def health():
     return {"status": "ok"}
@@ -102,7 +115,6 @@ def generate_test_cases_endpoint(issue_key: str):
     }
 
 ## Generates usability tests based on the given user story key and its linked test cases
-## Saves the generated usability tests to Jira
 @app.post("/generate/usability-tests/{issue_key}") 
 def generate_usability_tests_endpoint(issue_key: str): 
  
@@ -122,17 +134,41 @@ def generate_usability_tests_endpoint(issue_key: str):
         story, 
         test_cases_for_prompt 
     )
+ 
+    return { 
+        "issue_key": issue_key, 
+        "usability_tests": usability_tests
+    }
+
+## Saves the generated usability tests to Jira
+@app.post("/push/usability-tests/{issue_key}")
+def push_usability_tests_endpoint(issue_key: str,request: PushUsabilityTestsRequest):
+
+    story = jira.get_story(issue_key)
+
+    usability_tests = [
+        test.model_dump()
+        for test in request.usability_tests
+    ]
 
     created_usability_tests = jira.push_usability_tests(
         story,
         usability_tests
     )
- 
-    return { 
-        "issue_key": issue_key, 
+
+    return {
+        "issue_key": issue_key,
         "usability_tests": created_usability_tests
     }
 
+## Search Jira stories for the frontend story selector
+@app.get("/jira/stories/search")
+def search_stories_endpoint(q: str, limit: int = 10):
+    stories = jira.search_stories(q, limit)
+
+    return {
+        "stories": stories
+    }
 
 
 ## Synchronizes unprocessed user stories
@@ -167,5 +203,6 @@ async def sync_loop():
             print(f"Jira sync failed: {e}")
 
         await asyncio.sleep(60)
+        
 
 
