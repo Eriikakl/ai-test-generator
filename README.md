@@ -1,42 +1,62 @@
 # AI Test Generator
 
-AI-pohjainen testiautomaatioprojekti, joka yhdistää Jira-integraation ja LLM-pohjaisen testien generoinnin. Jiran käyttäjätarinoista generoidaan testitapauksia automaattisesti, luodaan ne Jiraan ja linkitetään takaisin alkuperäisiin käyttäjätarinoihin.
+An AI-based test automation project that combines Jira integration with LLM-based test generation. Test cases are automatically generated from Jira user stories, created in Jira, and linked back to the original user stories.
 
-Projektissa voidaan generoida käyttäjätarinoiden ja niihin liittyvien testitapausten perusteella käytettävyystestejä. Käytettävyystestit voidaan tarkistaa ja muokata ennen niiden viemistä Jiraan. 
+The project can generate usability tests based on user stories and their related test cases. Usability tests can be reviewed and edited before they are pushed to Jira.
 
-Projektia on suunniteltu laajennettavaksi testiscriptien generointiin.
+The project is designed to be extended with test script generation.
 
-## Nykyinen tilanne
+> **Note:** This English version was translated from Finnish with the help of AI and reviewed manually.
 
-- Kehityksessä
 
-Tällä hetkellä projekti koostuu kahdesta eri workflow:sta.
+## Current status
 
-Jira-pohjainen testitapausten ja käytettävyystestien generointi
-- Hakee Jira API:sta käyttäjätarinan
-- Generoi testitapaukset LLM:n (Gemini) avulla
-- Luo Jiraan Task-issuet testitapauksista ja linkittää ne alkuperäiseen käyttäjätarinaan
-- Hakee käyttäjätarinaan linkitetyt testitapaukset ja generoi niiden sekä alkuperäisen käyttäjätarinan pohjalta käytettävyystestit
-- Käytettävyystestien generointi voidaan käynnistää käyttöliittymästä tai FastAPI-endpointin kautta, minkä jälkeen testit voidaan tarkistaa, hyväksyä ja viedä Jiraan
-- Luo hyväksytyistä käytettävyystesteistä Jiraan Task-issuet ja linkittää ne alkuperäiseen käyttäjätarinaan
+- In development
 
-[Katso projektin nykyinen tila](docs/Results.md) 
+Currently, the project consists of two different workflows.
+
+Jira-based test case and usability test generation
+
+- Fetches the user story from the Jira API
+
+- Generates test cases using an LLM (Gemini)
+
+- Creates Task issues in Jira from the test cases and links them to the original user story
+
+- Fetches the test cases linked to the user story and generates usability tests based on them and the original user story
+
+- Usability test generation can be started from the user interface or through a FastAPI endpoint, after which the tests can be reviewed, approved, and pushed to Jira
+
+- Creates Jira Task issues from the approved usability tests and links them to the original user story
+
+[View the current state of the project](docs/Results.md)
 
 ---
-Kehitystä ja testausta varten projekti sisältää myös CSV-pohjaisen generointityönkulun.
 
-CSV-pohjainen testidatan generointi:
-- Lukee käyttäjätarinat CSV-tiedostosta
-- Käyttää MockLLM-komponenttia testidatan generointiin
-- Tuottaa:
-      - `test_cases.csv`
-      - `usability_tests.csv`
-      - `generated_tests.robot`
+For development and testing, the project also includes a CSV-based generation workflow.
 
-## Projektirakenne
+CSV-based test data generation:
+
+- Reads user stories from a CSV file
+
+- Uses the MockLLM component for test data generation
+
+- Produces:
+
+  ```
+  - `test_cases.csv`
+
+  - `usability_tests.csv`
+
+  - `generated_tests.robot`
+  ```
+
+## Project structure
 
 ```text
+
 backend/
+
 ├── app/
 │   ├── csv_pipeline/
 │       ├── csv_reader.py
@@ -65,9 +85,10 @@ backend/
 │   ├── test_cases.csv
 │   ├── usability_tests.csv
 │   └── generated_tests.robot
+
 ```
 
-## Teknologiat
+## Technologies
 
 ### Backend
 
@@ -77,30 +98,28 @@ backend/
 
 ### AI
 
-Nykyinen:
 - Google Gemini API
-- MockLLM (Kehitys ja testaus)
+- MockLLM (Development and testing)
 
 ### Data
 
-Nykyinen:
-- CSV (testaus)
+- Jira (test cases and usability tests)
+- CSV (testing)
 - JSON
-
-Suunnitteilla:
-- PostgreSQL
 
 ### Frontend
 
 - TypeScript
 - React
 - Vite
+- CSS
 
 ## Jira
 
-### Käyttäjätarinan formaatti
+### User story format
 
 ```JSON
+
 {
   "issue_key": "ABC-1",
   "summary": "User can login",
@@ -108,10 +127,13 @@ Suunnitteilla:
   "priority": "High",
   "status": "To Do"
 }
-```
-### Arkkitehtuuri
 
-#### Yksittäisen käyttäjätarinan käsittely
+```
+
+## Architecture
+
+### Processing a single user story
+
 ```text
 Jira User Story (ABC-1)
       ↓
@@ -126,8 +148,38 @@ LLM Service (Gemini)
 Test Case Generation
       ↓
 JiraService (POST /issue)
+      ↓
+JiraService (POST /issueLink)
 ```
-#### Automaattinen Jira-synkronointi
+
+### Usability test generation and review
+
+```text
+Jira User Story (ABC-1)
+      ↓
+JiraService (GET /issue)
+      ↓
+Linked Test Cases
+      ↓
+Prompt Builder
+      ↓
+LLM Service (Gemini)
+      ↓
+Usability Test Generation
+      ↓
+Frontend
+      ↓
+Human Review
+      ↓
+Approved Usability Tests
+      ↓
+JiraService (POST /issue)
+      ↓
+JiraService (POST /issueLink)
+```
+
+### Automatic Jira synchronization
+
 ```text
 FastAPI
       ↓
@@ -148,233 +200,325 @@ JiraService (POST /issue)
 JiraService (POST /issueLink)
 ```
 
+
 ## API
 
 **Jira Webhook**
 
 ```http
+
 POST /jira/webhook
+
 ```
 
-- Valmisteltu endpoint Jira-automaatiota varten.
-- Tarkoituksena käsitellä uudet käyttäjätarinat automaattisesti.
+- Prepared endpoint for Jira automation.
+
+- Intended to automatically process new user stories.
 
 ---
 
 **Jira Sync**
 
 ```http
+
 POST /jira/sync
+
 ```
 
-- Synkronoi käsittelemättömät käyttäjätarinat Jirasta.
-- Luo testitapaukset automaattisesti uusille käyttäjätarinoille.
+- Synchronizes unprocessed user stories from Jira.
+
+- Automatically creates test cases for new user stories.
 
 ---
 
-**Testitapausten hakeminen**
+**Fetching test cases**
 
 ```http
+
 GET /test-cases/{issue_key}
+
 ```
 
-- Hakee käyttäjätarinaan linkitetyt testitapaukset annetun tunnuksen perusteella.
+- Fetches the test cases linked to the user story based on the given issue key.
 
 ---
 
-**Testitapausten generointi**
+**Test case generation**
 
 ```http
+
 POST /generate/test-cases/{issue_key}
+
 ```
 
-- Hakee käyttäjätarinan Jira API:sta annetun tunnuksen perusteella.
-- Generoi testitapaukset käyttäjätarinan perusteella LLMn avulla.
-- Luo generoiduista testitapauksista Jiraan Task-issuet.
-- Linkittää testitapaukset alkuperäiseen käyttäjätarinaan.
+- Fetches the user story from the Jira API based on the given issue key.
+
+- Generates test cases based on the user story using an LLM.
+
+- Creates Jira Task issues from the generated test cases.
+
+- Links the test cases to the original user story.
 
 ---
 
-**Käytettävyystestien generointi**
+**Usability test generation**
 
 ```http
+
 POST /generate/usability-tests/{issue_key}
+
 ```
 
-- Hakee käyttäjätarinan Jira API annetun issue keyn perusteella.
-- Hakee käyttäjätarinaan linkitetyt testitapaukset.
-- Generoi käytettävyystestit käyttäjätarinan ja testitapausten perusteella LLM avulla.
-- Palauttaa generoidut käytettävyystestit käyttöliittymälle tarkistettavaksi.
-- Generoituja testejä ei tässä vaiheessa vielä luoda Jiraan.
+- Fetches the user story from the Jira API based on the given issue key.
+
+- Fetches the test cases linked to the user story.
+
+- Generates usability tests based on the user story and test cases using an LLM.
+
+- Returns the generated usability tests to the user interface for review.
+
+- The generated tests are not yet created in Jira at this stage.
 
 ---
 
-**Käytettävyystestien lähettäminen Jiraan**
+**Sending usability tests to Jira**
 
 ```http
+
 POST /push/usability-tests/{issue_key}
+
 ```
 
-- Vastaanottaa käyttöliittymässä tarkistetut käytettävyystestit.
-- Välittää vain käyttäjän hyväksymät testit Jiraan.
-- Luo hyväksytyistä käytettävyystesteistä Jira Task -issuet.
-- **Ei vielä aseta testille käyttäjän määrittämää prioriteettia.**
-- Linkittää luodut käytettävyystestit alkuperäiseen käyttäjätarinaan.
+- Receives the usability tests reviewed in the user interface.
+
+- Sends only the tests approved by the user to Jira.
+
+- Creates Jira Task issues from the approved usability tests.
+
+- **Does not yet set the priority defined by the user for the test.**
+
+- Links the created usability tests to the original user story.
 
 ---
 
-**Jira-käyttäjätarinoiden haku**
+**Jira user story search**
 
 ```http
+
 GET /jira/stories/search?q={query}&limit={limit}
+
 ```
 
-- Hakee Jira-projektista käyttäjätarinoita hakusanan tai issue keyn perusteella.
-- Rajaa haun vain Story-tyyppisiin issueihin.
-- Palauttaa löydettyjen käyttäjätarinoiden issue keyt ja otsikot API-vastauksena.
-- Käyttöliittymä hyödyntää endpointia käyttäjätarinan valintaan.
+- Searches for user stories in the Jira project based on a search term or issue key.
+
+- Limits the search to Story-type issues only.
+
+- Returns the issue keys and summaries of the found user stories as an API response.
+
+- The user interface uses the endpoint for selecting a user story.
 
 ---
 
 ## Setup
 
-### 1. Kloonataan repositorio
+### 1. Clone the repository
 
-### 2. Luodaan virtuaaliympäristö
+### 2. Create a virtual environment
 
 ```bash
+
 python -m venv .venv
+
 ```
 
-Aktivointi:
+Activation:
 
 ```bash
+
 . .venv/scripts/activate
+
 ```
 
-
-### 3. Asennetaan riippuvuudet /backend
+### 3. Install dependencies /backend
 
 ```bash
+
 pip install fastapi uvicorn requests python-dotenv google-genai
+
 ```
 
+#### Jira workflow only:
 
-#### Vain Jira-workflow:
 ```bash
+
 pip install requests python-dotenv google-genai
+
 ```
+
 ---
 
-### 4. Ympäristömuuttujat
-Projektiin on luotu `.env` tiedosto Jira-asetusten turvalliseen käyttöön: 
+### 4. Environment variables
+
+An `.env` file has been created for securely using the Jira settings:
 
 ```env
+
 JIRA_BASE_URL=https://your-domain.atlassian.net
+
 JIRA_EMAIL=your.email@example.com
+
 JIRA_API_TOKEN=your_api_token_here
+
 JIRA_PROJECT_KEY=ABC
 
 GEMINI_API_KEY=your_api_token_here
+
 ```
 
+## Running
 
-## Suoritus
-
-### Käynnistetään FastAPI /backend
+### Start FastAPI /backend
 
 ```bash
+
 uvicorn app.main:app --reload
+
 ```
-- Käynnistyksen yhteydessä sovellus aloittaa automaattisen Jira-synkronoinnin.
-- Synkronointi suoritetaan minuutin välein taustalla.
+
+- When starting, the application begins automatic Jira synchronization.
+
+- Synchronization runs in the background every minute.
+
 ---
 
-### Käynnistetään /frontend
+### Start /frontend
 
 ```bash
+
 npm install
+
 npm run dev
+
 ```
 
 ---
 
 ## CSV
-### Käyttäjätarinan formaatti
+
+### User story format
 
 ```csv
+
 Issue key,Summary,Description,Priority,Status
+
 AUTH-3,User can edit profile,"As a user, I want to update my profile information",Medium,To Do
+
 ```
 
-### Tuotettavat tiedostot
+### Generated files
 
 #### Test Cases
 
 ```csv
+
 story_key,story_title,test_case,priority
+
 AUTH-3,User can edit profile,User can update profile information successfully,Medium
+
 AUTH-3,User can edit profile,Changes are saved and visible after refresh,Medium
+
 AUTH-3,User can edit profile,Required fields cannot be left empty,Medium
+
 AUTH-3,User can edit profile,Invalid email format is rejected,Medium
+
 AUTH-3,User can edit profile,User receives confirmation after saving profile,Medium
+
 ```
 
 #### Usability Tests
 
 ```csv
+
 story_key,story_title,usability_test,priority
+
 AUTH-3,User can edit profile,Can users easily find the profile settings page?,Medium
+
 AUTH-3,User can edit profile,Do users understand which fields can be edited?,Medium
+
 AUTH-3,User can edit profile,Is the save action clearly visible?,Medium
+
 AUTH-3,User can edit profile,Are validation messages understandable?,Medium
+
 AUTH-3,User can edit profile,Can users confirm that changes were saved?,Medium
+
 ```
 
 #### Robot Framework
 
 ```robot
+
 *** Test Cases ***
+
                Edit Profile Test
+
                     Open Browser    http://example.com
+
                     Click Element    profile_menu
+
                     Click Element    edit_profile_button
+
                     Input Text    first_name_field    John
+
                     Input Text    last_name_field    Doe
+
                     Click Button    save_button
+
                     Page Should Contain    Profile updated successfully
+
 ```
 
-
-
-### Arkkitehtuuri
-
+### Architecture
 
 ```text
-User Stories - Syöte
+
+User Stories - Input
+
       ↓
-CSV Reader - Luku
+
+CSV Reader - Reading
+
       ↓
-Prompt Builder - LLM-ohjeistus
+
+Prompt Builder - LLM instructions
+
       ↓
-LLM Service - AI generointi*
+
+LLM Service - AI generation*
+
       ↓
-Result Processing - LLM:n vastauksen käsittely
+
+Result Processing - Processing the LLM response
+
       ↓
-Output Writers - Tuotoksen kirjoitus
+
+Output Writers - Writing the output
+
       ↓
-CSV ja Robot Framework File - Tuotokset
+
+CSV and Robot Framework File - Outputs
+
 ```
 
--  *LLM Service: MockLLM (simuloitu AI)
+* *LLM Service: MockLLM (simulated AI)
 
-### Ajetaan batch-ajona /backend (testaus)
+### Run as a batch job /backend (testing)
 
 #### CSV
 
 ```bash
+
 python -m app.csv_pipeline.generate_from_csv
+
 ```
 
 ---
-
